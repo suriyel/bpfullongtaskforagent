@@ -9,8 +9,6 @@ description: "当 ATS 文档存在（或自动跳过）但 features 任务清单
 
 在 SRS / Design / ATS 都获批后运行一次。通过 `init_project.cjs` 打包确定性骨架，分发三个 sub-skill 生成 env-guide.md / init.sh / long-task-guide.md + features，然后 git init 并把 features 灌入 iter loop。Step 3/4/5 分发到 SubAgent；主 agent 仅保留 orchestration + 用户交互。
 
-**开始时宣告：** "I'm using the init skill to scaffold the project."
-
 ## 输入文档
 
 | 文档 | 位置 | 提供 |
@@ -28,9 +26,9 @@ description: "当 ATS 文档存在（或自动跳过）但 features 任务清单
 - **返回契约**：`{{SHARE-REFERENCE}}/structured-return-contract.md`（若存在；否则按节点末嵌入约定）
 - **审批-返工循环**：`{{SHARE-REFERENCE}}/approval-revise-loop.md`（approve / revise / escalate；2 轮封顶；sizing 关卡与 env §3/§4 双闸门规则；Addendum 组装）
 
-## 清单
+## 流程概览
 
-为每步创建 TodoWrite 任务并顺序完成。
+下列步骤按顺序完成：
 
 ### 1. Orient
 
@@ -70,12 +68,12 @@ node {{SCRIPTS}}/init_project.cjs "<project-name>" \
 
 ### 5. 生成 long-task-guide.md 与 features 任务清单（**需求拆分按蓝图 tasksSchemas 规则**）
 
-**关键约束 — 任务字段必须严格遵循蓝图 `tasksSchemas.default` 规约**（见本节点末"Tasks Schema"节，由蓝图引擎渲染 `{{SCHEMA:default}}` 提供单一事实源）。SubAgent 不得自定义任务字段；蓝图引擎对 `id` / `status` 字段强校验，对 `doneValues=["passing"]` 之外的字段透传。
+**关键约束 — 任务字段必须严格遵循蓝图 `tasksSchemas.default` 规约**（见本节点末"Tasks Schema"段；该段已固化在本 SKILL.md，与 `blueprint.json.tasksSchemas.default` 同源——如修改字段定义请两处同步）。SubAgent 不得自定义任务字段；蓝图引擎对 `id` / `status` 字段强校验，对 `doneValues=["passing"]` 之外的字段透传。
 
 > **DISPATCH** → 创建独立 SubAgent（使用 Agent 工具），在 subagent 中加载并执行 skill `long-task:long-task-init-features`
 > **input**:
 > - 文档路径：从 SRS / Design / ATS / env-guide.md / project-context.md.tech_stack 自行定位
-> - **任务结构规约（强制）**：必须按蓝图 `tasksSchemas.default` 产出每个 item，字段列表与类型对照 `{{SCHEMA:default}}`（本节点末渲染）：
+> - **任务结构规约（强制）**：必须按蓝图 `tasksSchemas.default` 产出每个 item，字段列表与类型对照本节点末 Tasks Schema 段：
 >   - **L1 必填**：`id`（string|number，全局唯一）、`status`（string，初始化为 `"failing"`，loop 引擎按 `doneValues=["passing"]` 判定完成）、`dependencies`（array，可空）
 >   - **L2 推荐**：`title`（string）、`description`（string）、`priority`（high|medium|low）
 >   - **L3 业务字段**：`category`（string，如 `core`/`bugfix`/`infra`）、`srs_trace`（array，FR/NFR ID 列表）、`verification_steps`（array，Given/When/Then 行）、`tech_stack`（object，从 project-context.md.tech_stack 继承）、`constraints`（array，复制 SRS CON 项）、`assumptions`（array，复制 SRS ASM 项）、`single_round`（boolean）、`ui`（boolean，UI 特性标识）
@@ -130,11 +128,47 @@ git commit -m "chore: initialize long-task project scaffold
 
 > 未声明字段透传，body skill 可用 `{{loop.task.<field>}}` 引用。
 
-## Tasks Schema（蓝图单一事实源 — SSOT）
+## Tasks Schema（iter-tasks.json items[] 元素结构）
 
-以下字段表与示例由蓝图引擎根据 `blueprint.json.tasksSchemas.default` 在节点装载时自动渲染。Step 5 init-features SubAgent **必须**按此 schema 产出 `iter-tasks.json`；蓝图引擎对 `id` 唯一性与 `status` 默认值做强校验，`doneValues=["passing"]` 之外的字段透传。
+以下字段表与示例**直接固化在本 SKILL.md**，与 `blueprint.json.tasksSchemas.default` 同源。Step 5 init-features SubAgent **必须**按此 schema 产出 `iter-tasks.json`；蓝图引擎对 L1 字段做强校验，L2/L3/L4 字段透传。
 
-{{SCHEMA:default}}
+> ⚠ 修改字段定义时**两处同步**：本 SKILL.md 与 `blueprint.json.tasksSchemas.default`（运行时引擎用它做 items 校验）。
+
+### items[] 元素结构
+
+```json
+[
+  {
+    "id": 1,                                   // L1 必填: string|number; 全局唯一（建议数字 1,2,3...）
+    "status": "failing",                       // L1 必填: string; default "failing"; 由 loop 引擎按 doneValues=["passing"] 判定完成；任务完成由 wst 节点 bp-advance ok 自动翻转
+    "title": "登录表单组件",                    // L2 推荐: string
+    "description": "邮箱 + 密码字段、必填校验、submit 触发回调", // L2 推荐: string
+    "priority": "high",                        // L2 推荐: string ∈ ["high", "medium", "low"]
+    "dependencies": [],                        // L2 推荐: array<id>; 仅引用本批次已存在 id，不得跨 loop 迭代引用
+    "category": "core",                        // L3 业务: string (e.g. "core" / "bugfix" / "infra")
+    "srs_trace": ["FR-001", "FR-003"],         // L3 业务: array<string> FR/NFR ID 列表；每个 FR-xxx/NFR-xxx 至少出现在一个 task 的 srs_trace 中
+    "verification_steps": [                    // L3 业务: array<string> Given/When/Then 行为场景；至少 1 步含 3+ 链式操作
+      "页面渲染表单",
+      "空提交报错",
+      "成功 submit 调回调"
+    ],
+    "tech_stack": {},                          // L3 业务: object; 继承 project-context.md.tech_stack
+    "constraints": [],                         // L3 业务: array<string>; 复制 SRS CON 项
+    "assumptions": [],                         // L3 业务: array<string>; 复制 SRS ASM 项
+    "single_round": false,                     // L3 业务: boolean; 单轮模式标识（继承 SRS frontmatter Single-Round 字段）
+    "ui": true                                 // L3 业务: boolean; UI 特性标识，下游 wst 节点按此裁剪测试类别
+  }
+]
+```
+
+### 字段层级与引擎处理
+
+| 层级 | 字段 | 引擎处理 |
+|---|---|---|
+| **L1 必填** | `id`、`status` | 强校验：id 全局唯一、status 类型必须 string；缺失或类型错拒绝灌入 |
+| **L2 推荐** | `title`、`description`、`priority`、`dependencies` | 缺失允许；`priority` 若给出须 ∈ enum |
+| **L3 业务** | `category`、`srs_trace`、`verification_steps`、`tech_stack`、`constraints`、`assumptions`、`single_round`、`ui` | 引擎透传不校验；下游 wd/red/green/refactor/wst 按这些字段裁剪行为 |
+| **L4 扩展** | 任意未声明字段 | `extensionFieldsAllowed: true`；body skill 可用 `{{loop.task.<field>}}` 引用 |
 
 **字段规约要点**：
 - `status`：单一事实源由 loop 引擎根据 `doneValues=["passing"]` 管理；init 阶段始终把所有 task 的 status 初始化为 `"failing"`；任务完成由 wst 节点 `bp-advance ok` 自动翻转
