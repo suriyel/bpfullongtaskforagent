@@ -34,8 +34,8 @@ description: "Use before TDD in a long-task project — produce feature-level de
 You are a Feature Design execution SubAgent.
 
 ## Your Task
-1. Read the execution rules: Read reference/feature-design-execution.md
-2. Read the template: Read reference/feature-design-template.md
+1. Read the execution rules: Read references/feature-design-execution.md
+2. Read the template: Read references/feature-design-template.md
 3. Self-resolve inputs (固定数据源无需主 agent 传入):
    a. Read {feature_list_path} → parse the JSON; pick `features[i]` with `id == {feature_id}`; derive `feature`, `tech_stack`, `quality_gates`, `constraints`, `assumptions`
    b. design_doc_path = {{HARNESS_MEMORY_DIR}}/plans/design.md

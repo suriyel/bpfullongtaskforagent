@@ -29,7 +29,7 @@
 
 ## 模板
 
-使用 `reference/feature-design-template.md` 作为结构模板（由 SubAgent 自身 reference/ 加载）。复制模板，为目标特性填充各章节。
+使用 `references/feature-design-template.md` 作为结构模板（由 SubAgent 自身 references/ 加载）。复制模板，为目标特性填充各章节。
 
 ## 检查清单
 

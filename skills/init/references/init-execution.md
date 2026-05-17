@@ -10,7 +10,7 @@
 
 ### § init-env — 生成 env-guide.md
 
-> **使用 Agent 工具分发独立 SubAgent** — 在 subagent 中加载并执行 sub-skill `long-task-init-env` 的业务逻辑（参见 `{{HARNESS_MEMORY_DIR}}/notes/long-task-init-env.md` 或源插件 skill）。
+> **{{AGENT}} 分发独立 SubAgent** — 在 subagent 中加载并执行 sub-skill `init-env` 的业务逻辑。
 > **input**: `project_lang`（来自任务结构 `tech_stack.language` 字段）。
 > **expect**: Structured Return Contract；`artifacts_written=["env-guide.md"]`；`next_step_input` 含 `services[]` / `env_activation_cmd` / `build_cmd` / `test_cmd` / `coverage_cmd` / `tool_version_pins` / `ui_detected`。
 
@@ -35,7 +35,7 @@ approved_sections: []
 
 ### § init-bootstrap — 生成 init.sh / init.ps1
 
-> **使用 Agent 工具分发独立 SubAgent** — 在 subagent 中加载并执行 sub-skill `long-task-init-bootstrap` 的业务逻辑。
+> **{{AGENT}} 分发独立 SubAgent** — 在 subagent 中加载并执行 sub-skill `init-bootstrap` 的业务逻辑。
 > **input**: 自行从 `tech_stack` + env-guide.md §2 / §3 定位。
 > **expect**: Structured Return Contract；`artifacts_written=["init.sh", "init.ps1"]`；`next_step_input` 含 `env_manager` / `runtime_version` / `install_commands`；`evidence` **必含** `"bash -n clean"` 与 PowerShell parser 通过记录。
 
@@ -61,7 +61,7 @@ pwsh -NoProfile -Command "[System.Management.Automation.Language.Parser]::ParseF
 
 ### § init-features — 生成 long-task-guide.md + 填充 feature-list 字段
 
-> **使用 Agent 工具分发独立 SubAgent** — 在 subagent 中加载并执行 sub-skill `long-task-init-features` 的业务逻辑。
+> **{{AGENT}} 分发独立 SubAgent** — 在 subagent 中加载并执行 sub-skill `init-features` 的业务逻辑。
 > **input**: 自行从 SRS / Design / ATS / env-guide.md / `tech_stack` 定位。
 > **expect**: Structured Return Contract；`artifacts_written` 含 `{{HARNESS_MEMORY_DIR}}/notes/long-task-guide.md` / `.env.example` / `.gitignore` / `scripts/check_configs.py` 以及对应任务结构字段更新；`next_step_input` 含 `feature_count` / `loc_distribution` / `feature_summary` / `ui_feature_count` / `config_count` / `nfr_feature_count` / `single_round` / `validate_guide_ok` / `validate_features_ok`。
 

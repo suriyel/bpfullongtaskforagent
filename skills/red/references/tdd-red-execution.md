@@ -98,7 +98,7 @@
 
 通过 `evaluate_script()` 执行自动化错误检测；`list_console_messages(types=["error"])` 必须返回 0 错误（除非 `[expect-console-error: <pattern>]`）。
 
-完整检测脚本与集成流程见 `reference/ui-error-detection.md`（若该 reference 未落盘则按上述 EXPECT/REJECT + evaluate_script 自检即可）。
+完整检测脚本与集成流程见 `references/ui-error-detection.md`（若该 reference 未落盘则按上述 EXPECT/REJECT + evaluate_script 自检即可）。
 
 ## 失败验证规则
 

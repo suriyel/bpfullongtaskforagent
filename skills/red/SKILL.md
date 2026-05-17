@@ -172,7 +172,7 @@ def test_user_persisted_to_db(): ...
 
 通过 `evaluate_script()` 执行自动化错误检测；`list_console_messages(types=["error"])` 必须返回 0 错误（除非 `[expect-console-error: <pattern>]`）。
 
-完整检测脚本与集成流程见 `reference/ui-error-detection.md`。
+完整检测脚本与集成流程见 `references/ui-error-detection.md`。
 
 ## Rule 7 — 正向渲染验证（当 `"ui": true`）
 
@@ -197,7 +197,7 @@ Rule 6 检测 UI **错误**；Rule 7 验证 UI **存在性**。
 
 **最低**：§7 每行 `UI/render` ≥ 1 个正向渲染测试。
 
-可复用校验脚本见 `reference/ui-error-detection.md` § Layer 1b。
+可复用校验脚本见 `references/ui-error-detection.md` § Layer 1b。
 
 ## Rule 8 — UML 元素追溯覆盖（当特性设计文档含 mermaid 图）
 

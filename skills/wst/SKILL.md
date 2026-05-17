@@ -19,7 +19,7 @@ description: "对**当前任务**执行黑盒 Feature-ST 验收测试（独立 S
 
 ## 你的任务（主 agent 视角）
 
-**核心原则**：Feature-ST 用例派生、撰写、执行在**独立 SubAgent**（依 `reference/feature-st-execution.md`）跑；Inline Check 与 Persist 在主 agent 直接执行（无 SubAgent）。
+**核心原则**：Feature-ST 用例派生、撰写、执行在**独立 SubAgent**（依 `references/feature-st-execution.md`）跑；Inline Check 与 Persist 在主 agent 直接执行（无 SubAgent）。
 
 1. **读上下游文档**（单次全量 Read，禁止 offset/limit / Grep 切片）：
    - SRS：`{{HARNESS_MEMORY_DIR}}/plans/srs.md`
@@ -28,7 +28,7 @@ description: "对**当前任务**执行黑盒 Feature-ST 验收测试（独立 S
    - ATS（如存在）：`{{HARNESS_MEMORY_DIR}}/plans/ats.md` — 约束 ST 必须覆盖的类别
    - UCD（仅 `ui: true`）：`{{HARNESS_MEMORY_DIR}}/plans/ucd.md`
 2. 读取代码库约定（如存在）：`{{HARNESS_MEMORY_DIR}}/notes/rules/*.md`
-3. 读取 SubAgent 执行规则：`reference/feature-st-execution.md`（路径相对本 SKILL.md）
+3. 读取 SubAgent 执行规则：`references/feature-st-execution.md`（路径相对本 SKILL.md）
 
 ## Bootstrap
 
@@ -36,9 +36,9 @@ description: "对**当前任务**执行黑盒 Feature-ST 验收测试（独立 S
 
 ## DISPATCH Feature-ST SubAgent
 
-> **DISPATCH** → 创建独立 SubAgent（使用 Claude `Agent` 工具或 OpenCode 平台原生 subagent 机制）
+> **DISPATCH** → 创建独立 SubAgent（{{AGENT}}）
 > **prompt** 含：
-> - "Read the execution rules: `reference/feature-st-execution.md`"（路径相对本 SKILL.md）
+> - "Read the execution rules: `references/feature-st-execution.md`"（路径相对本 SKILL.md）
 > - 动态输入：`feature_id`、`task.title`、`task.description`、`srs_trace`、`ui`、`category`、`working_dir`
 > - 让 SubAgent 自行从 `{{HARNESS_MEMORY_DIR}}/plans/` 解析 srs / design / ats / ucd 路径
 > - 输出路径：`{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-test-cases.md`
