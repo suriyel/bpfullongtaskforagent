@@ -36,7 +36,7 @@ approved_sections: []
 ### § init-bootstrap — 生成 init.sh / init.ps1
 
 > **{{AGENT}} 分发独立 SubAgent** — 在 subagent 中加载并执行 sub-skill `init-bootstrap` 的业务逻辑。
-> **input**: 自行从 `tech_stack` + env-guide.md §2 / §3 定位。
+> **input**: `tech_stack`（来自 `{{HARNESS_MEMORY_DIR}}/plans/project-context.md`）, `env_activation_cmd`（来自 `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md §2`）, `build_cmd` / `test_cmd`（来自 `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md §3`）, `working_dir`。
 > **expect**: Structured Return Contract；`artifacts_written=["init.sh", "init.ps1"]`；`next_step_input` 含 `env_manager` / `runtime_version` / `install_commands`；`evidence` **必含** `"bash -n clean"` 与 PowerShell parser 通过记录。
 
 零审批直通：确定性输出 + 内置语法自检。`status: pass` 即跳到下一步。`fail` / `blocked` 按审批-返工循环处理。
@@ -62,7 +62,7 @@ pwsh -NoProfile -Command "[System.Management.Automation.Language.Parser]::ParseF
 ### § init-features — 生成 long-task-guide.md + 填充 feature-list 字段
 
 > **{{AGENT}} 分发独立 SubAgent** — 在 subagent 中加载并执行 sub-skill `init-features` 的业务逻辑。
-> **input**: 自行从 SRS / Design / ATS / env-guide.md / `tech_stack` 定位。
+> **input**: `srs_path={{HARNESS_MEMORY_DIR}}/plans/srs.md`, `design_path={{HARNESS_MEMORY_DIR}}/plans/design.md`, `ats_path={{HARNESS_MEMORY_DIR}}/plans/ats.md`（如不存在传 `"none"`）, `env_guide_path={{HARNESS_MEMORY_DIR}}/notes/env-guide.md`, `tech_stack`（来自 `{{HARNESS_MEMORY_DIR}}/plans/project-context.md`）, `working_dir`。
 > **expect**: Structured Return Contract；`artifacts_written` 含 `{{HARNESS_MEMORY_DIR}}/notes/long-task-guide.md` / `.env.example` / `.gitignore` / `scripts/check_configs.py` 以及对应任务结构字段更新；`next_step_input` 含 `feature_count` / `loc_distribution` / `feature_summary` / `ui_feature_count` / `config_count` / `nfr_feature_count` / `single_round` / `validate_guide_ok` / `validate_features_ok`。
 
 SubAgent 内部执行 A → F 六个子阶段（业务正文保留，供主 agent 审批时复核）：

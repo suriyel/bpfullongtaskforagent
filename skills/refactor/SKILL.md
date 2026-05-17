@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: "TDD Refactor 阶段 — 保持测试为绿的同时清理代码；重新核对设计 §4/§6/§8 对齐；按 env-guide §3 跑静态分析关卡"
+description: "当 gate_static 通过后由 DAG 推进到本节点时使用 — TDD Refactor 阶段：保持测试为绿的同时清理代码；重新核对设计 §4/§6/§8 对齐"
 ---
 
 **语言规则**：用中文（简体）回复用户。所有生成的文档、报告和面向用户的输出用中文。Skill 名称、代码标识符、JSON 字段名保持英文。

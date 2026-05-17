@@ -21,9 +21,9 @@ sub-skill 返回 Structured Return Contract 后，按本模板处理。
 
 | Sub-skill | 审批关卡 |
 |---|---|
-| `long-task-requirements-quality` | 不启用（主 agent 用 next_step_input 的候选清单自行驱动 AskUserQuestion 后进下一步）|
-| `long-task-requirements-alignment` | 不启用（alignment_summary_text 由 finalize 写入 SRS §1.3）|
-| `long-task-requirements-finalize` | 启用（文档已落盘，审批仅决定 approve / revise / escalate）|
+| `req-quality` | 不启用（主 agent 用 next_step_input 的候选清单自行驱动 AskUserQuestion 后进下一步）|
+| `req-alignment` | 不启用（alignment_summary_text 由 finalize 写入 SRS §1.3）|
+| `req-finalize` | 启用（文档已落盘，审批仅决定 approve / revise / escalate）|
 
 ## revise 封顶
 

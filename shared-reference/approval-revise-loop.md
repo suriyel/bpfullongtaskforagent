@@ -1,6 +1,6 @@
-# 审批-返工循环（Approval-Revise Loop · long-task-init）
+# 审批-返工循环（Approval-Revise Loop · init 节点）
 
-> 所有 `long-task-init-*` sub-skill 返回 Structured Return Contract 后，主 agent 按本模板统一处理"呈给用户 → 审批 → 返工"。`long-task-init-bootstrap` 是零审批直通（确定性输出），env 与 features 走完整循环。
+> 所有被 init 节点 DISPATCH 的 sub-skill（`init-env` / `init-bootstrap` / `init-features`）返回 Structured Return Contract 后，主 agent 按本模板统一处理"呈给用户 → 审批 → 返工"。`init-bootstrap` 是零审批直通（确定性输出），env 与 features 走完整循环。
 
 ## 主 Agent 循环
 
@@ -108,7 +108,7 @@
 
 ## Features Sizing 关卡细则（features sub-skill 专用）
 
-`long-task-init-features` 返回 pass 后，主 agent 在审批关卡**之前**插入 sizing 呈示：
+`init-features` 返回 pass 后，主 agent 在审批关卡**之前**插入 sizing 呈示：
 
 ```
 Feature count: <count>
@@ -153,7 +153,7 @@ Next-step inputs (summary):
 ```
 
 - `input` 字段名由 SubAgent 在其 prompt 中直接引用（无需 `=` 赋值；SubAgent 从自己的 prompt 读取实际值）
-- 固定路径（`feature-list.json` / `docs/plans/*-design.md` / `docs/rules/*.md` 等）由 sub-skill 内部定位，不作为 input 字段
+- 固定路径（`{{HARNESS_MEMORY_DIR}}/plans/design.md` / `{{HARNESS_MEMORY_DIR}}/notes/rules/*.md` 等；task 数据通过 `{{TASK_GET}}` 拿）由 sub-skill 内部定位，不作为 input 字段
 - 过程量走 `next_step_input`（主 agent 在内存中传递）；仅最终落盘文档列入 `artifacts_written`
 
 ## 反模式

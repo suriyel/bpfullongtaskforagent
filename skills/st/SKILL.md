@@ -5,7 +5,7 @@ description: "Use when all features in iter loop are passing - run comprehensive
 
 # 系统测试 —— 发布前的跨特性与系统级校验
 
-在所有特性实现且通过后，运行跨特性与系统级测试。每特性的 ST 测试用例（功能、边界、UI、安全）已在每个 Worker 循环中通过 `long-task-feature-st` 执行。本阶段聚焦逐特性测试**无法**覆盖的内容：跨特性交互、多特性 E2E 工作流、系统级 NFR 校验、兼容性，以及探索性测试。
+在所有特性实现且通过后，运行跨特性与系统级测试。每特性的 ST 测试用例（功能、边界、UI、安全）已在每个 iter loop 中通过 wst 节点（DISPATCH `feature-st` sub-skill）执行。本阶段聚焦逐特性测试**无法**覆盖的内容：跨特性交互、多特性 E2E 工作流、系统级 NFR 校验、兼容性，以及探索性测试。
 
 **开始时宣告：** "I'm using the long-task-st skill. All features are passing — time for cross-feature system testing."
 

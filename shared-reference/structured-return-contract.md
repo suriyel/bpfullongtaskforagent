@@ -25,7 +25,7 @@ Worker 一次 feature cycle 涉及 feature-design → tdd → quality → featur
 | 字段 | 类型 | 语义 | 主 Agent 用途 |
 |---|---|---|---|
 | `status` | enum | `pass` / `fail` / `blocked` | 分支决策：下一步 or 升级用户 |
-| `artifacts_written` | str[] | 本步产出或修改的持久化文件（`docs/features/*.md`、测试文件、test-cases/*.md 等） | 合并到 git commit；task-progress.md 记录 |
+| `artifacts_written` | str[] | 本步产出或修改的持久化文件（`{{HARNESS_MEMORY_DIR}}/notes/feature-*.md`、测试文件、`{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-test-cases.md` 等） | 合并到 git commit；task-progress.md 记录 |
 | `next_step_input` | JSON-like object | 下一步 SubAgent 需要的**最小**字段（如 `coverage_line: 94, coverage_branch: 88`） | 构造下一个 SubAgent prompt |
 | `blockers` | str[] | 仅在 `blocked` 时填写；每条一句话描述阻塞原因 + 用户需提供的信息 | 组装 `AskUserQuestion` 的输入 |
 | `evidence` | str[] | 断言为 pass 的最小证据（例："pytest test_login::test_valid_creds PASSED"；"line coverage 94% ≥ 90%"） | task-progress.md 归档 |
@@ -34,12 +34,12 @@ Worker 一次 feature cycle 涉及 feature-design → tdd → quality → featur
 
 ### Feature Design SubAgent — pass
 ```markdown
-## SubAgent Result: long-task-feature-design
+## SubAgent Result: feature-design
 
 **status**: pass
-**artifacts_written**: ["docs/features/3-login-api.md"]
+**artifacts_written**: ["{{HARNESS_MEMORY_DIR}}/notes/feature-3-design.md"]
 **next_step_input**: {
-  "design_doc": "docs/features/3-login-api.md",
+  "design_doc": "{{HARNESS_MEMORY_DIR}}/notes/feature-3-design.md",
   "test_inventory_rows": 12,
   "interface_contracts": ["POST /api/login", "GET /api/session"],
   "srs_trace": ["FR-003"]
@@ -95,8 +95,8 @@ Worker 一次 feature cycle 涉及 feature-design → tdd → quality → featur
 Worker SKILL.md 中所有 SubAgent 分发点统一使用 markdown blockquote 声明式语法，避免绑定特定工具名：
 
 ```markdown
-> **DISPATCH** → launch independent SubAgent to load and execute `long-task-feature-design`
-> **with input**: feature_id=N, srs_trace=["FR-001"], design_path=docs/plans/*-design.md
+> **DISPATCH** → launch independent SubAgent to load and execute `feature-design`
+> **with input**: feature_id=N, srs_trace=["FR-001"], design_path={{HARNESS_MEMORY_DIR}}/plans/design.md
 > **expect**: Structured Return Contract (status, artifacts_written, next_step_input, blockers, evidence)
 ```
 
@@ -107,7 +107,7 @@ DISPATCH 语义：
 
 ## 兼容已有 SubAgent
 
-已有 `long-task-feature-design` / `long-task-quality` / `long-task-feature-st` 的 SKILL 已定义各自的 Return Contract（含 Verdict / Metrics 等扩展字段）。这些 SKILL 的契约 **向本统一契约对齐**：
+已有 `feature-design` / `quality` / `feature-st` 的 SKILL 已定义各自的 Return Contract（含 Verdict / Metrics 等扩展字段）。这些 SKILL 的契约 **向本统一契约对齐**：
 - `Verdict: PASS` ↔ `status: pass`；`FAIL` ↔ `fail`；`BLOCKED` ↔ `blocked`
 - 扩展字段（Metrics、Risks、Issues 等）保留，作为 `evidence` 的结构化形态
 - 所有 Return Contract 必须声明至少顶层 5 个统一字段（status / artifacts_written / next_step_input / blockers / evidence）

@@ -181,10 +181,23 @@
             }
           },
           {
+            "id": "quality",
+            "kind": "skill",
+            "title": "质量关卡（Real Test / SRS Trace / Coverage）",
+            "x": 1100,
+            "y": 100,
+            "onFail": {
+              "rewindTo": "green",
+              "ticketTitle": "Quality 失败 — 扩测或补 srs_trace 锚定",
+              "maxAttempts": 2,
+              "when": "status != \"ok\""
+            }
+          },
+          {
             "id": "wst",
             "kind": "skill",
             "title": "Feature ST",
-            "x": 1100,
+            "x": 1300,
             "y": 100,
             "onFail": {
               "rewindTo": "green",
@@ -214,6 +227,11 @@
           },
           {
             "from": "refactor",
+            "to": "quality",
+            "when": "status == \"ok\""
+          },
+          {
+            "from": "quality",
             "to": "wst",
             "when": "status == \"ok\""
           }

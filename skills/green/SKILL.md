@@ -1,6 +1,6 @@
 ---
 name: green
-description: "TDD Green 阶段 — 最小化实现，严格对齐特性设计 §4/§6/§8（接口契约 / 实现摘要 / 数据模型）+ 服从 env-guide §4 codebase constraints + 服务进程输出启动信息"
+description: "当 red 完成后由 DAG 推进到本节点时使用 — TDD Green 阶段：最小化实现，严格对齐特性设计 §4/§6/§8（接口契约 / 实现摘要 / 数据模型）+ 服从 env-guide §4 codebase constraints + 服务进程输出启动信息"
 ---
 
 **语言规则**：用中文（简体）回复用户。所有生成的文档、报告和面向用户的输出用中文。Skill 名称、代码标识符、JSON 字段名保持英文。

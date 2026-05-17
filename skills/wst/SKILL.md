@@ -33,6 +33,8 @@ description: "对**当前任务**执行黑盒 Feature-ST 验收测试（独立 S
 
 按 init 阶段产物（`{{HARNESS_MEMORY_DIR}}/plans/env-guide.md` 或同等约定）激活环境。Feature-ST SubAgent **自管理**服务生命周期（启动 / 重启 / 清理），主 agent 仅确认环境与命令可用即可。
 
+> **前置节点产出说明**：本节点假定 quality 节点（前置）已 PASS 全部 3 道关卡（Real Test / SRS Trace / Coverage）；`{{HARNESS_MEMORY_DIR}}/notes/task-progress.md` 当前 task 标题下已有 `- Quality: line=N%, branch=M%, srs_trace=C/N covered` 记录。Feature-ST 不再重复验证覆盖率或 srs_trace 字面引用——专注黑盒验收测试 + ATS 类别覆盖（见下文 Inline e2）。
+
 ## DISPATCH Feature-ST SubAgent
 
 > **DISPATCH** → 创建独立 SubAgent（{{AGENT}}），在 subagent 中加载并执行 skill `feature-st`

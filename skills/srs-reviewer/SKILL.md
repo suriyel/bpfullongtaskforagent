@@ -325,3 +325,62 @@ description: "当 req 节点 Step 13 DISPATCH 时使用 — 独立审查 SRS 草
 
 **永不编造领域值**：
 不要在用户未陈述或获取上下文未直接暗示的地方提供数字、名称或业务规则。若 SRS 说"fast"且获取期间未给出阈值，唯一正确的解决类型是 USER-INPUT — 而非编造"200ms"。
+
+---
+
+## Structured Return Contract
+
+严格按此格式返回：
+
+```markdown
+## SubAgent Result: srs-reviewer
+
+**status**: pass | fail | blocked
+**artifacts_written**: []
+**next_step_input**: {
+  "track": "lite | expert",
+  "group_verdicts": {
+    "R": "PASS | FAIL",
+    "A": "PASS | FAIL",
+    "C": "PASS | FAIL",
+    "S": "PASS | FAIL",
+    "B": "PASS | FAIL | PASS-SKIPPED",
+    "D": "PASS | FAIL",
+    "G": "PASS | FAIL",
+    "Z": "PASS | FAIL",
+    "P": "PASS | FAIL | PASS-SKIPPED"
+  },
+  "user_input_items": [
+    "[Rx] FR-xxx: <issue> | Q: <specific question for user>"
+  ],
+  "llm_fixable_items": [
+    "[Rx] FR-xxx: <issue> | Fix: <minimal change LLM can apply>"
+  ]
+}
+**blockers**: [
+  "若 status=blocked（输入文件不可读）：[INPUT-MISSING] <path>"
+]
+**evidence**: [
+  "Issues Found Step 1: <count> potential issues identified",
+  "Group R: <PASS | FAIL — N/8 checks YES>",
+  "Group A: <PASS | FAIL — N/7 checks YES>",
+  "Group C: <PASS | FAIL — N/4 checks YES>",
+  "Group S: <PASS | FAIL — N/4 checks YES>",
+  "Group B: <PASS | FAIL | PASS-SKIPPED — N/3 checks YES>",
+  "Group D: <PASS | FAIL — N/4 checks YES>",
+  "Group G: <PASS | FAIL — N/3 checks YES>",
+  "Group Z: <PASS | FAIL — N/3 checks YES>",
+  "Group P: <PASS | FAIL | PASS-SKIPPED — N/5 checks YES>"
+]
+```
+
+字段语义：
+
+- `status`：`pass` 表示所有 Group 全 PASS（或 PASS-SKIPPED）；`fail` 表示任一 Group 任一项 NO；`blocked` 仅在 SRS 草稿 / 项目上下文不可读时使用
+- `track`：`lite`（Group P = PASS-SKIPPED）或 `expert`（Group P 激活），由主 agent 在 input 中指定
+- `group_verdicts`：9 组裁决，与本 skill"问题分类启发式"段对齐
+- `user_input_items[]`：每条对应"始终 USER-INPUT" / "通常 USER-INPUT" / "粒度通常 USER-INPUT"分类下的问题，主 agent 用 AskUserQuestion 定向收集
+- `llm_fixable_items[]`：每条对应"始终 LLM-FIXABLE" / "定量通常 LLM-FIXABLE"分类下的问题，主 agent 并行修复
+- 主 agent（req）按 `{{SHARE-REFERENCE}}/approval-revise-loop.md` 双轨处理（Track 1 USER-INPUT → AskUserQuestion；Track 2 LLM-FIXABLE → 修订后 Revision Addendum 重分发）
+
+**重要**：reviewer **不修改任何文件**；`artifacts_written` 恒为 `[]`。

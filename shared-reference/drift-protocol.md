@@ -2,7 +2,7 @@
 
 ## 触发条件
 
-Green 或 Refactor 阶段发现实现的**公共符号**与 `docs/features/<id>-<slug>.md`（Feature Design；由 `scripts/feature_paths.py` 派生）对应章节不一致：
+Green 或 Refactor 阶段发现实现的**公共符号**与 `{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-design.md`（Feature Design；蓝图约定路径，`<id>` 由 `{{TASK_GET}}.id` 提供，无脚本派生）对应章节不一致：
 
 | 符号类型 | 设计节 | 典型偏离 |
 |---------|-------|---------|
@@ -30,7 +30,7 @@ Green 或 Refactor 阶段发现实现的**公共符号**与 `docs/features/<id>-
    - §5 改动 → 复查 `UI/render` 行（选择器 / 渲染触发要同步）
    - §6 改动 → 复查模块边界测试（调用链变了，单元切分可能要变）
    - §8 改动 → 复查数据断言（字段变了，assertion 要变）
-3. 设计文档更新与实现代码放在**同一次 git 提交**（`commit` 同时含 `docs/features/*.md` 与 `src/*` 与测试改动）
+3. 设计文档更新与实现代码放在**同一次 git 提交**（`commit` 同时含 `{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-design.md` 与 `src/*` 与测试改动）
 4. 记录 drift 到 Structured Return Contract 的 `next_step_input.design_alignment.<节>`，值为 `"updated(commit:<sha>)"`
 
 ## 无法本地决策
@@ -39,7 +39,7 @@ Green 或 Refactor 阶段发现实现的**公共符号**与 `docs/features/<id>-
 
 - 返回 `status: blocked`
 - `blockers[]` 添加前缀 `[CONTRACT-DEVIATION]` 的条目，描述两种走向的取舍
-- `long-task-work-tdd` 在 Step 3d 聚合后由主 agent 组装用户裁决（approval-revise-loop 的 `[CONTRACT-DEVIATION]` 行定义了 A/B 选项）
+- 蓝图 iter loop 内的 red / green / refactor 节点完成后由主 agent 在 approval-revise-loop 的 `[CONTRACT-DEVIATION]` 行定义的 A/B 选项中组装用户裁决
 
 ## 理由
 
