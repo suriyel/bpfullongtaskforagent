@@ -1,5 +1,7 @@
 # 对齐校验执行协议
 
+供 req SKILL.md E10（仅 Expert 轨道）严格执行 4 项校验。
+
 ## E10a. 根因可追溯性
 
 对 Pain Map（SRS §1.3）**每一行**：
@@ -13,7 +15,7 @@
 
 **缺口分流**：
 - 1–2 条 → 自解：新增一条最小化 FR **或** 新增显式 Out-of-Scope 条目（择所需变更更小者）→ 写入 `new_requirements`
-- ≥3 条 → 阻塞：缺口表进 `blockers`，主 agent 驱动用户决定"逐项转 FR 还是转 EXC"
+- ≥3 条 → 主 agent 驱动 AskUserQuestion，让用户逐项决定"转 FR 还是转 EXC"
 
 ## E10b. JTBD 结果验证
 
@@ -22,13 +24,12 @@
 检查："如果用户完成 §4 全部 Must 优先级 FR，是否达成 JTBD 的 'so I can [outcome]'？"
 
 - **YES** → PASS
-- **NO** → 识别 JTBD 结果中未覆盖方面 → 阻塞：未覆盖方面进 `blockers`，主 agent 驱动用户选择"新增 FR"或"确认 PARTIAL"
+- **NO** → 识别 JTBD 结果中未覆盖方面 → 主 agent 驱动 AskUserQuestion，让用户选择"新增 FR"或"确认 PARTIAL"
 
 **可接受结果**：
 - **PASS** — JTBD 完全可达
-- **PARTIAL** — 仅当主 agent 回传用户确认"当前范围足够"时允许；sub-skill 自身不得直接裁定 PARTIAL
-
-**关卡**：裁决非 PASS 且未有用户确认 → `status: blocked`。
+- **PARTIAL** — 仅当用户确认"当前范围足够"时允许；主 agent 不得直接裁定 PARTIAL
+- **FAIL** — 永远伴随 AskUserQuestion 兜底
 
 ## E10c. Pre-Mortem
 
@@ -61,7 +62,7 @@
 
 ## 输出
 
-生成 `alignment_summary_text` 字符串（供主 agent 后续写入 SRS §1.3）：
+生成 `alignment_summary_text` 字符串（待 Step 15 写入 SRS §1.3）：
 
 ```
 Alignment Validation: PASS | PARTIAL | FAIL
@@ -73,5 +74,5 @@ Alignment Validation: PASS | PARTIAL | FAIL
 
 **PASS / PARTIAL / FAIL 判定**：
 - PASS：E10a 缺口全部自解 + E10b JTBD = PASS + E10d 孤儿已进 Open Questions
-- PARTIAL：仅在 blocker → 主 agent 获用户确认后重分发时可得
-- FAIL：E10b JTBD 未达且无用户确认 → 永远伴随 `status: blocked`，不独立出现
+- PARTIAL：经用户确认"当前范围足够"
+- FAIL：E10b JTBD 未达且用户未确认 → 必须先 AskUserQuestion 收用户裁决，再决定 PARTIAL / 新增 FR
