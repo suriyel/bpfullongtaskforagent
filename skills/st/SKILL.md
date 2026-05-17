@@ -300,9 +300,9 @@ Charter: Explore [feature area]
 生成 `{{HARNESS_MEMORY_DIR}}/plans/st-report.md`，含以下节：
 1. **Executive Summary** —— 1-3 句：整体质量评估与发布建议
 2. **Requirements Traceability Matrix** —— 完整 RTM 表，含 Feature ST 状态、System ST 类别、ATS 类别、结果、证据；覆盖计数（X/Y 需求，Z%）；列出任何缺口；含 ATS 合规检查结果（`check_ats_coverage.py --strict` 输出）
-3. **Test Execution Summary** —— 表：类别、跑过数、通过、失败、跳过、备注（Step 2a 的每个类别一行）；含最终行 **Real Test Cases** —— 聚合来自所有特性 ST 文档（`docs/test-cases/feature-*.md` Real Test Case Execution Summary 表）的 `Real` 测试用例计数（总数 / 通过 / 失败）；若存在任何手工测试用例，含 **Manual Test Cases** 行——聚合所有 Feature-ST 文档与 System-ST 执行步骤的手工测试用例计数（总数 / MANUAL-PASS / MANUAL-FAIL / BLOCKED）
+3. **Test Execution Summary** —— 表：类别、跑过数、通过、失败、跳过、备注（Step 2a 的每个类别一行）；含最终行 **Real Test Cases** —— 聚合来自所有特性 ST 文档（`{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-test-cases.md` Real Test Case Execution Summary 表）的 `Real` 测试用例计数（总数 / 通过 / 失败）；若存在任何手工测试用例，含 **Manual Test Cases** 行——聚合所有 Feature-ST 文档与 System-ST 执行步骤的手工测试用例计数（总数 / MANUAL-PASS / MANUAL-FAIL / BLOCKED）
 4. **Defect Summary** —— 表：严重性、**escaped from**、类别、描述、状态（fixed/deferred）、修复引用；总数；未关闭 Critical/Major 数（Go 必须为 0）；若 ≥2 个缺陷共享同一 "Escaped From" 源，在 Risk Assessment 标为系统性缺口
-5. **Quality Metrics** —— 行/分支覆盖率 vs 阈值、总测试数；真实测试用例：总数 / 通过 / 失败（从所有 `docs/test-cases/feature-*.md` Real Test Case Execution Summary 表聚合）
+5. **Quality Metrics** —— 行/分支覆盖率 vs 阈值、总测试数；真实测试用例：总数 / 通过 / 失败（从所有 `{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-test-cases.md` Real Test Case Execution Summary 表聚合）
 6. **Risk Assessment** —— 剩余风险附可能性、影响、缓解
 7. **Recommendations** —— 发布后监控、已知限制、改进建议
 

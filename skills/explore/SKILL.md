@@ -18,7 +18,7 @@ description: "Use for on-demand deep exploration of an existing codebase - analy
 
 两种模式下：
 - **不要**修改任何源码、测试或配置文件
-- 若 `docs/rules/` 存在（来自 codebase-scanner），可参考但不依赖
+- 若 `{{HARNESS_MEMORY_DIR}}/notes/rules/` 存在（来自 scan 节点），可参考但不依赖
 
 ## CRITICAL: DOCUMENT WHAT IS, NOT WHAT SHOULD BE
 
@@ -58,7 +58,7 @@ description: "Use for on-demand deep exploration of an existing codebase - analy
    | 1,000 – 10,000 | `standard` |
    | > 10,000 | `deep` |
 
-5. **既有规则**：若 `docs/rules/README.md` 存在，阅读以补充上下文（语言、内部库、构建系统）。作为补充上下文传递给 SubAgent。
+5. **既有规则**：若 `{{HARNESS_MEMORY_DIR}}/notes/rules/README.md` 存在，阅读以补充上下文（语言、内部库、构建系统）。作为补充上下文传递给 SubAgent。
 
 构建 **Project Profile** 对象：
 ```
@@ -137,10 +137,10 @@ description: "Use for on-demand deep exploration of an existing codebase - analy
 创建探索报告：
 
 ```bash
-mkdir -p docs/explore/
+mkdir -p {{HARNESS_MEMORY_DIR}}/notes/explore/
 ```
 
-使用 `docs/templates/explore-report-template.md` 模板写 `docs/explore/codebase-research.md`。
+使用 `{{SHARE-REFERENCE}}/explore-report-template.md` 模板写 `{{HARNESS_MEMORY_DIR}}/notes/explore/codebase-research.md`。
 
 ### 各深度的输出规模
 
@@ -156,7 +156,7 @@ mkdir -p docs/explore/
 
 ### 重跑行为
 
-若 `docs/explore/codebase-research.md` 已存在，干净地覆盖。报告永远是一次新快照。
+若 `{{HARNESS_MEMORY_DIR}}/notes/explore/codebase-research.md` 已存在，干净地覆盖。报告永远是一次新快照。
 
 ## Step 7: 呈现摘要
 
@@ -176,7 +176,7 @@ Depth: [depth] | Files sampled: [N] / [M total]
 - Test/Source Ratio: [N/M]
 - Tech Debt Markers: [N] TODOs, [M] FIXMEs
 
-Full report: docs/explore/codebase-research.md
+Full report: {{HARNESS_MEMORY_DIR}}/notes/explore/codebase-research.md
 ```
 
 若用户提供了自然语言问题，在展示摘要之前使用综合发现直接作答。

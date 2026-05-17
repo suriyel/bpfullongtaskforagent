@@ -141,7 +141,7 @@ git commit -m "chore: initialize long-task project scaffold
 [
   {
     "id": 1,                                   // L1 必填: string|number; 全局唯一（建议数字 1,2,3...）
-    "status": "failing",                       // L1 必填: string; default "failing"; 由 loop 引擎按 doneValues=["passing"] 判定完成；任务完成由 wst 节点 bp-advance ok 自动翻转
+    "status": "failing",                       // L1 必填: string; default "failing"（与 blueprint.json.tasksSchemas.default + 参考蓝图 long-task-flow 一致）；由 loop 引擎按 doneValues=["passing"] 判定完成；任务完成由 wst 节点 bp-advance ok 自动翻 "passing"
     "title": "登录表单组件",                    // L2 推荐: string
     "description": "邮箱 + 密码字段、必填校验、submit 触发回调", // L2 推荐: string
     "priority": "high",                        // L2 推荐: string ∈ ["high", "medium", "low"]
@@ -172,7 +172,7 @@ git commit -m "chore: initialize long-task project scaffold
 | **L4 扩展** | 任意未声明字段 | `extensionFieldsAllowed: true`；body skill 可用 `{{loop.task.<field>}}` 引用 |
 
 **字段规约要点**：
-- `status`：单一事实源由 loop 引擎根据 `doneValues=["passing"]` 管理；init 阶段始终把所有 task 的 status 初始化为 `"failing"`；任务完成由 wst 节点 `bp-advance ok` 自动翻转
+- `status`：单一事实源由 loop 引擎根据 `doneValues=["passing"]` 管理；init 阶段始终把所有 task 的 status 初始化为 `"failing"`；任务完成由 wst 节点 `bp-advance ok` 自动翻转为 `"passing"`
 - `id`：建议数字（1, 2, 3, ...），便于排序与依赖引用；string 也合法但需保持全局唯一
 - `dependencies`：仅引用本批次内已存在的 task id；不得跨 loop 迭代引用
 - `srs_trace`：每个 FR-xxx / NFR-xxx 至少出现在一个 task 的 `srs_trace` 中（无孤立需求）

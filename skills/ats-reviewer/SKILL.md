@@ -17,7 +17,7 @@ description: "当 ats 节点 DISPATCH 时使用 — 独立评审 ATS 草稿对 S
 - Design 文档（`docs/plans/*-design.md`）
 - UCD 样式指南（`docs/plans/*-ucd.md`）——仅 UI 项目
 
-返回必须匹配 `skills/using-long-task/references/structured-return-contract.md` 的五字段契约（见本文末「返回契约」节）。
+返回必须匹配 `{{SHARE-REFERENCE}}/structured-return-contract.md` 的五字段契约（见本文末「返回契约」节）。
 
 ## 评审流程
 
@@ -212,7 +212,7 @@ description: "当 ats 节点 DISPATCH 时使用 — 独立评审 ATS 草稿对 S
 
 ## 返回契约
 
-必须返回符合 `skills/using-long-task/references/structured-return-contract.md` 的五字段结构。第一行固定：
+必须返回符合 `{{SHARE-REFERENCE}}/structured-return-contract.md` 的五字段结构。第一行固定：
 
 ```markdown
 ## SubAgent Result: ats-reviewer
@@ -263,4 +263,4 @@ description: "当 ats 节点 DISPATCH 时使用 — 独立评审 ATS 草稿对 S
    - ATS 章节引用
    - 差异性质：**omission**（SRS 标准未进入 ATS）、**contradiction**（数值不同）或 **distortion**（含义改变）
 2. 评审者**不**决定哪一方取值正确——只报告差异并提供双方文档的证据
-3. 主 skill 按 `skills/long-task-ats/references/approval-revise-loop.md` 消费 `blockers`：逐条通过 `AskUserQuestion` 请用户裁决（A/B/C）；记录到 ATS 附录
+3. 主 skill 按 `{{SHARE-REFERENCE}}/approval-revise-loop.md` 消费 `blockers`：逐条通过 `AskUserQuestion` 请用户裁决（A/B/C）；记录到 ATS 附录

@@ -16,7 +16,9 @@ const fs = require('fs');
 const path = require('path');
 
 // ---- 常量（照搬 validate_features.py:32-37）---------------------------------
-const REQUIRED_FIELDS = ['id', 'category', 'title', 'description', 'priority', 'status'];
+// L1 必填仅 id + status（与 blueprint-contract.md 一致）；
+// category/title/description/priority 属 L2/L3，不强校验缺失，类型违例仍报错。
+const REQUIRED_FIELDS = ['id', 'status'];
 const SRS_TRACE_PATTERN = /^(?:FR|IFR)-\d{3}$/;
 const VALID_STATUSES = new Set(['failing', 'passing']);
 const VALID_PRIORITIES = new Set(['high', 'medium', 'low']);
