@@ -128,6 +128,7 @@ git commit -m "chore: initialize long-task project scaffold
 
 > 未声明字段透传，body skill 可用 `{{loop.task.<field>}}` 引用。
 
+<!-- tasks-schema: default -->
 ## Tasks Schema（iter-tasks.json items[] 元素结构）
 
 以下字段表与示例**直接固化在本 SKILL.md**，与 `blueprint.json.tasksSchemas.default` 同源。Step 5 init-features SubAgent **必须**按此 schema 产出 `iter-tasks.json`；蓝图引擎对 L1 字段做强校验，L2/L3/L4 字段透传。
