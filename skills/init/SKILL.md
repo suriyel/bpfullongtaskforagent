@@ -52,7 +52,7 @@ node {{SCRIPTS}}/init_project.cjs "<project-name>" \
 
 ### 3. 生成 env-guide.md
 
-> **DISPATCH** → 创建独立 SubAgent（使用 Agent 工具），在 subagent 中加载并执行 skill `long-task:long-task-init-env`
+> **DISPATCH** → 创建独立 SubAgent（{{AGENT}}），在 subagent 中加载并执行 skill `init-env`
 > **input**: `project_lang`（来自 init_project.cjs 写入的 project-context.md tech_stack）
 > **expect**: Structured Return Contract；`artifacts_written=["{{HARNESS_MEMORY_DIR}}/notes/env-guide.md"]`；`next_step_input` 含 `services[]` / `env_activation_cmd` / `build_cmd` / `test_cmd` / `coverage_cmd` / `tool_version_pins` / `ui_detected`
 
@@ -60,7 +60,7 @@ node {{SCRIPTS}}/init_project.cjs "<project-name>" \
 
 ### 4. 生成 init.sh / init.ps1
 
-> **DISPATCH** → 创建独立 SubAgent（使用 Agent 工具），在 subagent 中加载并执行 skill `long-task:long-task-init-bootstrap`
+> **DISPATCH** → 创建独立 SubAgent（{{AGENT}}），在 subagent 中加载并执行 skill `init-bootstrap`
 > **input**: （从 project-context.md.tech_stack + env-guide.md §2 / §3 自行定位）
 > **expect**: Structured Return Contract；`artifacts_written=["init.sh", "init.ps1"]`；`next_step_input` 含 `env_manager` / `runtime_version` / `install_commands`；`evidence` 必含 `"bash -n clean"` 与 PowerShell parser 通过记录
 
@@ -70,7 +70,7 @@ node {{SCRIPTS}}/init_project.cjs "<project-name>" \
 
 **关键约束 — 任务字段必须严格遵循蓝图 `tasksSchemas.default` 规约**（见本节点末"Tasks Schema"段；该段已固化在本 SKILL.md，与 `blueprint.json.tasksSchemas.default` 同源——如修改字段定义请两处同步）。SubAgent 不得自定义任务字段；蓝图引擎对 `id` / `status` 字段强校验，对 `doneValues=["passing"]` 之外的字段透传。
 
-> **DISPATCH** → 创建独立 SubAgent（使用 Agent 工具），在 subagent 中加载并执行 skill `long-task:long-task-init-features`
+> **DISPATCH** → 创建独立 SubAgent（{{AGENT}}），在 subagent 中加载并执行 skill `init-features`
 > **input**:
 > - 文档路径：从 SRS / Design / ATS / env-guide.md / project-context.md.tech_stack 自行定位
 > - **任务结构规约（强制）**：必须按蓝图 `tasksSchemas.default` 产出每个 item，字段列表与类型对照本节点末 Tasks Schema 段：

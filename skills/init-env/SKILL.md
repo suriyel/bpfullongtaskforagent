@@ -9,7 +9,7 @@ description: "Use when dispatched by init Step 3 — generate env-guide.md (six 
 
 ## 步骤
 
-1. 读 `references/env-guide-template.md` 作为骨架（裸相对路径，由 skill 协议按 SKILL.md 自身目录解析）
+1. 读 `references/env-guide-template.md` 作为骨架
 2. 读 `{{HARNESS_MEMORY_DIR}}/plans/design.md`：服务端口、健康检查 URL、服务名、技术栈、build/test/coverage 工具链
 3. 读 `{{HARNESS_MEMORY_DIR}}/plans/srs.md`：接口需求（IFR-xxx）的外部依赖（数据库、消息队列、三方服务）
 4. 读 `{{HARNESS_MEMORY_DIR}}/notes/rules/`（若存在，含 `coding-constraints.md` / `build-and-compilation.md` 等）：存量代码库约束；若目录不存在或仅含占位，greenfield 处理
