@@ -36,7 +36,7 @@ mkdir -p {{HARNESS_MEMORY_DIR}}/notes/rules/
 
 统计源文件数（扩展名集合同步骤 2：`.py .js .ts .java .c .cpp .go .rs`；排除目录：`.git/ node_modules/ venv/ .venv/ dist/ build/ __pycache__/ target/`）。
 
-- **< 3**：创建 `{{HARNESS_MEMORY_DIR}}/notes/rules/project-state.md`，首行 `# 项目状态：初始空项目`，然后**跳至步骤 10 上报完成**（不执行步骤 2–9）。
+- **< 3**：创建 `{{HARNESS_MEMORY_DIR}}/notes/rules/project-state.md`，首行 `# 项目状态：初始空项目`，立即结束（不执行步骤 2–9）。
 - **≥ 3**：继续步骤 2。
 
 ### 步骤 2：检测语言、框架与扫描深度
@@ -243,16 +243,6 @@ mkdir -p {{HARNESS_MEMORY_DIR}}/notes/rules/
 通过 `AskUserQuestion` 展示发现：
 - 关键发现的简明摘要（尤其是二方库约束）
 - 请用户确认或编辑 `{{HARNESS_MEMORY_DIR}}/notes/rules/` 文件后再继续
-
-### 步骤 10：上报完成
-
-所有输出文件就绪且用户评审通过后，调用：
-
-{{ADVANCE_OK artifact={{HARNESS_MEMORY_DIR}}/notes/rules/README.md}}
-
-若扫描过程中遇到不可恢复错误（例如目标 cwd 不存在、无权限读取）：
-
-{{ADVANCE_FAIL notes="<原因摘要>"}}
 
 ---
 
