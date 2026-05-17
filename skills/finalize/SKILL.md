@@ -29,34 +29,11 @@ description: "Use after ST Go verdict — generate usage examples and finalize r
 
 分发 example-generator SubAgent 生成基于场景的使用示例。
 
-1. 构建 SubAgent 提示词：
-   ```
-   You are an Example Generator SubAgent.
+> **DISPATCH** → 创建独立 SubAgent（{{AGENT}}），在 subagent 中加载并执行 skill `example-generator`
+> **input**: `tasks`（来自 `{{TASKS_GET}}` 的完整任务清单 JSON）, `srs_path={{HARNESS_MEMORY_DIR}}/plans/srs.md`, `design_path={{HARNESS_MEMORY_DIR}}/plans/design.md`, `ucd_path={{HARNESS_MEMORY_DIR}}/plans/ucd.md`（如不存在传 `"none"`）, `tech_stack`（从 tasks 提取）, `working_dir`（项目根）
+> **expect**: Structured Return Contract；`status: PASS | PARTIAL | FAIL`；产物落 `examples/` 目录
 
-   ## Your Task
-   1. Read the agent definition: Read <skills_root>/../agents/example-generator.md
-      （蓝图运行时：`<skills_root>` 不可直接展开 — 用 Glob/Read 工具在当前 cwd 下定位蓝图根 `agents/example-generator.md`）
-   2. Follow the process to generate scenario-based usage examples
-   3. Return your result using the Structured Return Contract
-
-   ## Input Parameters
-   - tasks JSON (full feature list from {{TASKS_GET}}): <inline JSON>
-   - SRS: {{HARNESS_MEMORY_DIR}}/plans/srs.md
-   - Design: {{HARNESS_MEMORY_DIR}}/plans/design.md
-   - UCD: {{HARNESS_MEMORY_DIR}}/plans/ucd.md (or "none")
-   - tech_stack: <tech_stack_json extracted from tasks>
-   - Working directory: <project_root>
-   ```
-
-2. 分发：
-   ```
-   Agent(
-     description = "Generate usage examples for all features",
-     prompt = [constructed prompt]
-   )
-   ```
-
-3. 解析返回契约：
+解析返回契约：
    - **PASS**：所有计划场景均已生成并校验
    - **PARTIAL**：部分示例已生成；对缺口打 warning 日志
    - **FAIL**：打 error 日志；仍然继续 —— 示例生成是非阻塞的

@@ -1,4 +1,9 @@
-# Feature-Level Black-Box Acceptance Testing — SubAgent 执行参考
+---
+name: feature-st
+description: "当 wst 节点 DISPATCH 时使用 — 在独立 SubAgent 中执行特性级黑盒验收测试（ISO/IEC/IEEE 29119-3），自管理服务生命周期（启动/重启/清理），按 Structured Return Contract 返回 pass/fail/blocked"
+---
+
+# Feature-Level Black-Box Acceptance Testing — SubAgent 执行 Skill
 
 你是 Feature-ST 执行 SubAgent。严格遵循以下规则。完成后，使用本文件底部的 **Structured Return Contract** 返回结果。
 
@@ -6,7 +11,7 @@
 
 # Feature-Level Black-Box Acceptance Testing（特性级黑盒验收测试）
 
-在 TDD 实现与 quality gate 通过**之后**，对已完成特性执行黑盒验收测试。本参考独立管理自身的环境生命周期（启动 → 测试 → 清理），并生成符合 ISO/IEC/IEEE 29119 的测试用例文档。
+在 TDD 实现与 quality gate 通过**之后**，对已完成特性执行黑盒验收测试。本 skill 独立管理自身的环境生命周期（启动 → 测试 → 清理），并生成符合 ISO/IEC/IEEE 29119 的测试用例文档。
 
 ## 标准
 

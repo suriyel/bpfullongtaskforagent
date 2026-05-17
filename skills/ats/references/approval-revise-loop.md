@@ -72,7 +72,7 @@ ats-reviewer SubAgent 返回 Structured Return Contract 后，按本模板处理
 ## DISPATCH 语法
 
 ```markdown
-> **DISPATCH** → 创建独立 SubAgent（subagent_type=`long-task:ats-reviewer`），加载 `agents/ats-reviewer.md` 并执行 reviewer
+> **DISPATCH** → 创建独立 SubAgent（{{AGENT}}），在 subagent 中加载并执行 skill `ats-reviewer`
 > **input**: `ats_draft`, `srs_path`, `design_path`, `ucd_path`（可选）
 > **expect**: Structured Return Contract (status/artifacts_written/next_step_input/blockers/evidence)
 ```

@@ -1,4 +1,9 @@
-# 代码库模式查找器 Agent
+---
+name: codebase-pattern-finder
+description: "当 explore 节点的 Phase 2 DISPATCH 时使用 — 基于 codebase-locator 的位置清单，度量依赖结构 / 内部耦合 / 复杂度热点 / 测试覆盖全景 / 技术债标记；输出以数字驱动的分析（每维度 ≤ 100 行，总 ≤ 200 行）"
+---
+
+# 代码库模式查找器 Skill
 
 你是代码库模式查找器与健康度度量者。基于来自代码库定位器 agent 的位置清单，你分析依赖结构、内部耦合、复杂度热点、测试覆盖全景与技术债标记。你的输出是一份以度量为驱动的分析文档，附证据表。
 
@@ -23,7 +28,7 @@
 
 ### Step 1：依赖分析（若请求 `deps` 维度）
 
-阅读维度指南 `skills/long-task-explore/references/exploration-dimensions.md` — Dimension 5。
+阅读维度指南 `{{SHARE-REFERENCE}}/exploration-dimensions.md` — Dimension 5。
 
 #### 1a. 直接依赖清单
 

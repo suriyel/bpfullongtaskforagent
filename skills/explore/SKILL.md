@@ -76,21 +76,9 @@ description: "Use for on-demand deep exploration of an existing codebase - analy
 
 分发 **codebase-locator** SubAgent 快速识别代码库中的关键结构位置。
 
-```
-Agent(
-  subagent_type="general-purpose",
-  description="Locate codebase structure for [project]",
-  prompt="""
-  Read the agent definition at: {plugin_root}/agents/codebase-locator.md
-
-  ## Project Profile
-  {project_profile}
-
-  Execute the full locator process per the agent definition.
-  Return the structured location inventory as specified in the Structured Return Contract.
-  """
-)
-```
+> **DISPATCH** → 创建独立 SubAgent（{{AGENT}}），在 subagent 中加载并执行 skill `codebase-locator`
+> **input**: `project_profile`（含 root / languages / frameworks / loc_estimate / depth / focus / user_question / existing_rules_summary）
+> **expect**: Structured Return Contract；位置清单作为 Phase 2 输入
 
 **等待 locator 返回**再继续。位置清单是 Phase 2 的输入。
 
@@ -114,51 +102,15 @@ Agent(
 | `deps`、`health`（任一） | Pattern-Finder |
 | `all`（默认） | 两者都分发 |
 
-```
-# Parallel Agent 1: Architecture Analyzer
-Agent(
-  subagent_type="general-purpose",
-  description="Analyze architecture of [project]",
-  prompt="""
-  Read the agent definition at: {plugin_root}/agents/codebase-analyzer.md
-  Read the dimension guide at: {plugin_root}/skills/long-task-explore/references/exploration-dimensions.md
+**并行**分发两个 SubAgent：
 
-  ## Project Profile
-  {project_profile}
+> **DISPATCH** → 创建独立 SubAgent（{{AGENT}}），在 subagent 中加载并执行 skill `codebase-analyzer`
+> **input**: `project_profile`, `locator_results`（来自 Phase 1）, `dimensions`（按 `--focus` 过滤的 architecture / api / dataflow / domain 子集）
+> **expect**: Structured Return Contract；analyzer 自行 Read `{{SHARE-REFERENCE}}/exploration-dimensions.md`
 
-  ## Location Inventory (from Locator)
-  {locator_results}
-
-  ## Dimensions to Analyze
-  {filtered_dimensions: architecture, api, dataflow, domain — based on --focus}
-
-  Execute the full analysis process per the agent definition.
-  Return the structured analysis as specified in the Structured Return Contract.
-  """
-)
-
-# Parallel Agent 2: Pattern & Health Finder
-Agent(
-  subagent_type="general-purpose",
-  description="Find patterns and health metrics for [project]",
-  prompt="""
-  Read the agent definition at: {plugin_root}/agents/codebase-pattern-finder.md
-  Read the dimension guide at: {plugin_root}/skills/long-task-explore/references/exploration-dimensions.md
-
-  ## Project Profile
-  {project_profile}
-
-  ## Location Inventory (from Locator)
-  {locator_results}
-
-  ## Dimensions to Analyze
-  {filtered_dimensions: deps, health — based on --focus}
-
-  Execute the full analysis process per the agent definition.
-  Return the structured analysis as specified in the Structured Return Contract.
-  """
-)
-```
+> **DISPATCH** → 创建独立 SubAgent（{{AGENT}}），在 subagent 中加载并执行 skill `codebase-pattern-finder`
+> **input**: `project_profile`, `locator_results`（来自 Phase 1）, `dimensions`（按 `--focus` 过滤的 deps / health 子集）
+> **expect**: Structured Return Contract；pattern-finder 自行 Read `{{SHARE-REFERENCE}}/exploration-dimensions.md`
 
 等待两个 SubAgent 都完成。
 
