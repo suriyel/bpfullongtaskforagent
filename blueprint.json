@@ -333,9 +333,6 @@
         "title": {
           "type": "string"
         },
-        "description": {
-          "type": "string"
-        },
         "priority": {
           "type": "string",
           "enum": [
@@ -349,8 +346,21 @@
         }
       },
       "userFields": {
-        "category": {
+        "description": {
           "type": "string"
+        },
+        "wave": {
+          "type": "number"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "core",
+            "ui",
+            "api",
+            "infra",
+            "nfr"
+          ]
         },
         "srs_trace": {
           "type": "array"
@@ -358,19 +368,13 @@
         "verification_steps": {
           "type": "array"
         },
-        "tech_stack": {
-          "type": "object"
-        },
-        "constraints": {
-          "type": "array"
-        },
-        "assumptions": {
-          "type": "array"
-        },
-        "single_round": {
+        "ui": {
           "type": "boolean"
         },
-        "ui": {
+        "ui_entry": {
+          "type": "string"
+        },
+        "single_round": {
           "type": "boolean"
         }
       },
@@ -383,19 +387,22 @@
         "title": "登录表单组件",
         "status": "failing",
         "priority": "high",
-        "category": "core",
-        "ui": true,
+        "dependencies": [],
+        "wave": 0,
+        "category": "ui",
         "description": "邮箱 + 密码字段、必填校验、submit 触发回调",
         "srs_trace": [
           "FR-001",
           "FR-003"
         ],
-        "dependencies": [],
         "verification_steps": [
           "页面渲染表单",
           "空提交报错",
+          "[devtools] 页面显示「登录」按钮且初始 disabled",
           "成功 submit 调回调"
-        ]
+        ],
+        "ui": true,
+        "ui_entry": "/login"
       }
     }
   }
