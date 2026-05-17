@@ -101,7 +101,7 @@ SRS 描述系统必须做什么（WHAT）。设计文档描述怎么做（HOW）
    - 追溯到 SRS IFR-xxx 需求
 
 6. **§6 任务分解与依赖链**
-   - §6.1 每一行成为 `feature-list.json` 的一个特性；把相关的合适大小 FR（已由 SRS G+S 启发式校验）归入垂直切片；包含 `Mapped FRs` 列保可追溯
+   - §6.1 每一行成为 iter loop 的一个 task（init-features 节点会从此节落到 `.harness/blueprint/tasks/iter.json`）；把相关的合适大小 FR（已由 SRS G+S 启发式校验）归入垂直切片；包含 `Mapped FRs` 列保可追溯
    - §6.2 依赖链图（Mermaid `graph`）标识关键路径；全栈项目必须显式展示后端→前端边
 
 呈现每一节。等待用户反馈。在进入下一节前纳入更改。

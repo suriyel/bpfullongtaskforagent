@@ -90,8 +90,8 @@ To skip: respond SKIP {reason}
 ```markdown
 | Req ID | Requirement | Feature ST Status | System ST Category | ATS Categories | Test Approach | Priority |
 |--------|-------------|-------------------|--------------------|----------------|---------------|----------|
-| FR-001 | ... | docs/test-cases/feature-1-xxx.md (PASS) | E2E | FUNC,BNDRY,SEC | Scenario: ... | High |
-| NFR-001 | ... | docs/test-cases/feature-5-xxx.md (PASS) | Performance | PERF | Load test: ... | Critical |
+| FR-001 | ... | {{HARNESS_MEMORY_DIR}}/notes/feature-1-test-cases.md (PASS) | E2E | FUNC,BNDRY,SEC | Scenario: ... | High |
+| NFR-001 | ... | {{HARNESS_MEMORY_DIR}}/notes/feature-5-test-cases.md (PASS) | Performance | PERF | Load test: ... | Critical |
 | IFR-001 | ... | N/A (cross-feature) | Integration | FUNC,BNDRY | Contract test: ... | High |
 ```
 

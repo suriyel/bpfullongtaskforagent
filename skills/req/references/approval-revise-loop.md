@@ -70,7 +70,7 @@ sub-skill 返回 Structured Return Contract 后，按本模板处理。
 ```
 
 - `input` 字段名；SubAgent 从 prompt 读实际值
-- 固定路径（`docs/plans/*-srs.md` / `docs/templates/srs-template.md`）由 sub-skill 内部定位，不作 input
+- 固定路径（`{{HARNESS_MEMORY_DIR}}/plans/srs.md` / `{{SHARE-REFERENCE}}/srs-template.md`）由 sub-skill 内部定位，不作 input
 - 过程量走 `next_step_input`；仅 finalize 的 SRS / deferred 文档列入 `artifacts_written`
 
 ## 反模式

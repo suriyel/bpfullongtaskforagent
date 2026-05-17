@@ -78,7 +78,7 @@ ats-reviewer SubAgent 返回 Structured Return Contract 后，按本模板处理
 ```
 
 - `ats_draft`：当前待审 ATS 文档完整文本（未落盘）
-- 固定路径（`docs/plans/*-srs.md` / `*-design.md` / `*-ucd.md`）由 reviewer 内部 glob 定位
+- 固定路径（`{{HARNESS_MEMORY_DIR}}/plans/srs.md` / `design.md` / `ucd.md`）由 reviewer 内部读取定位
 - reviewer 不修改文件，`artifacts_written` 恒为 `[]`
 - `review_report_markdown` 走 `next_step_input`；Step 11 保存时作为附录追加
 

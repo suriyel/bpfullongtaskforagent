@@ -87,10 +87,10 @@ conda activate <env-name>
 ```
 
 ### 必需环境变量
-参见 `.env.example`。每个 `env`-type 配置对应 `feature-list.json` `required_configs[]` 一项。
+参见 `.env.example`。每个 `env`-type 配置对应 init 产物 `{{HARNESS_MEMORY_DIR}}/plans/project-context.md` 中 `required_configs[]` 一项。
 
 ### Config 加载
-参见 `scripts/check_configs.py` — 按项目原生格式加载（`.env` / `application.properties` / YAML 等）。
+按项目原生格式加载（`.env` / `application.properties` / YAML 等）；具体加载脚本由 init-features sub-skill 落到 `scripts/check_configs.py`。
 
 ---
 
@@ -143,7 +143,7 @@ conda activate <env-name>
 ## §4 存量代码库约束
 
 > **下游流水线消费区**（单一事实源）。Feature Design、TDD、Worker 的新代码必须遵守以下约束。
-> **数据源**：`docs/rules/*.md`（由 `codebase-scanner` 扫描填充）。init 阶段直接从 `docs/rules/` 提取关键约束投影到此处；设计文档**不再**镜像这些约束。
+> **数据源**：`{{HARNESS_MEMORY_DIR}}/notes/rules/*.md`（由 scan 节点扫描填充）。init 阶段直接从 `{{HARNESS_MEMORY_DIR}}/notes/rules/` 提取关键约束投影到此处；设计文档**不再**镜像这些约束。
 > 本段变更必须经人工审批（见 §6）。
 
 ### §4.1 强制内部库

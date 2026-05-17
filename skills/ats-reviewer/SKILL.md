@@ -13,9 +13,9 @@ description: "当 ats 节点 DISPATCH 时使用 — 独立评审 ATS 草稿对 S
 
 在 ATS 生成阶段（long-task-ats Step 9）作为 subagent 被分发。接收：
 - ATS 文档（草案）
-- SRS 文档（`docs/plans/*-srs.md`）
-- Design 文档（`docs/plans/*-design.md`）
-- UCD 样式指南（`docs/plans/*-ucd.md`）——仅 UI 项目
+- SRS 文档（`{{HARNESS_MEMORY_DIR}}/plans/srs.md`）
+- Design 文档（`{{HARNESS_MEMORY_DIR}}/plans/design.md`）
+- UCD 样式指南（`{{HARNESS_MEMORY_DIR}}/plans/ucd.md`）——仅 UI 项目
 
 返回必须匹配 `{{SHARE-REFERENCE}}/structured-return-contract.md` 的五字段契约（见本文末「返回契约」节）。
 

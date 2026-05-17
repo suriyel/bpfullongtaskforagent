@@ -8,7 +8,7 @@
 2. 派生功能设计文档路径：`{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-design.md`（`<id>` 取自 task.id）→ **单次 Read 整份文档**（不带 offset/limit）
 3. 找到 TDD Red 创建的测试文件（匹配该功能的最近测试文件）
 
-**禁令**：本 SubAgent 不得 Glob / Read / Grep `docs/plans/*-srs.md` 或 `docs/plans/*-design.md`。Design §11 约束已由 feature-design SubAgent 沉淀到 feature.md §全局约束摘录；缺失 → 返 BLOCKED。
+**禁令**：本 SubAgent 不得 Glob / Read / Grep `{{HARNESS_MEMORY_DIR}}/plans/srs.md` 或 `{{HARNESS_MEMORY_DIR}}/plans/design.md`。Design §11 约束已由 feature-design SubAgent 沉淀到 `{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-design.md` §全局约束摘录；缺失 → 返 BLOCKED。
 
 ## 步骤 2：读取实现约束
 

@@ -4,7 +4,7 @@
 **Feature**: #ID — [title]
 **Priority**: high/medium/low
 **Dependencies**: [list or "none"]
-**Design Reference**: docs/plans/YYYY-MM-DD-<topic>-design.md § 2.N
+**Design Reference**: {{HARNESS_MEMORY_DIR}}/plans/design.md § 2.N
 **SRS Reference**: FR-xxx
 
 ## Context

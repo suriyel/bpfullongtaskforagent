@@ -210,6 +210,6 @@ Full report: {{HARNESS_MEMORY_DIR}}/notes/explore/codebase-research.md
 - **证据驱动** —— 每个结构性主张都需要 `file:line` 示例
 - **不做评判** —— 按原样记录模式，即使不一致或过时
 - **输出上限** —— 遵守各深度的行数上限
-- **流水线隔离** —— **绝不**读写流水线工件（feature-list.json、SRS、设计文档）
+- **流水线隔离** —— **绝不**读写流水线工件（task 状态、SRS、设计文档）
 - **幂等** —— 重跑始终产出干净、全新的报告
 - **SubAgent 效率** —— 文件发现用 Glob，模式匹配用 Grep，文件检查用 Read，仅 git/wc/find 命令用 Bash

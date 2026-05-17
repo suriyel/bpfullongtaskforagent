@@ -166,7 +166,7 @@
 
 ### 格式
 
-`feature-list.json` 中的每个 `[devtools]` 验证步骤都必须使用如下结构：
+每个任务的 `verification_steps[]` 中以 `[devtools]` 前缀的步骤都必须使用如下结构（任务通过 `{{TASK_GET}}` 获取）：
 
 ```
 [devtools] <page-path> | EXPECT: <positive criteria> | REJECT: <negative criteria>

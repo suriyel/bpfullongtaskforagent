@@ -12,7 +12,7 @@
    - §静态分析与质量工具命令（§11.4 静态分析门禁依据 + §11.7 阈值）
 3. 读取 `long-task-guide.md` -> 提取测试命令
 
-**禁令**：本 SubAgent 不得 Glob / Read / Grep `docs/plans/*-srs.md` 或 `docs/plans/*-design.md`。Design §11 / §11.4 / §11.7 所有信息已沉淀到 feature.md 两沉淀章节；缺失 → 返 BLOCKED。
+**禁令**：本 SubAgent 不得 Glob / Read / Grep `{{HARNESS_MEMORY_DIR}}/plans/srs.md` 或 `{{HARNESS_MEMORY_DIR}}/plans/design.md`。Design §11 / §11.4 / §11.7 所有信息已沉淀到 `{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-design.md` 两沉淀章节；缺失 → 返 BLOCKED。
 
 ## 步骤 2：重构
 
@@ -29,14 +29,14 @@
 2. 修复所有违规项 -- 违规项为**阻塞性问题**
 3. 修复后重新运行测试
 4. 工具自行读取配置；不要手动解析配置文件
-5. 不得回访 `docs/plans/*-design.md`；若本章节显式 N/A → 跳过阶段 3
+5. 不得回访 `{{HARNESS_MEMORY_DIR}}/plans/design.md`；若本章节显式 N/A → 跳过阶段 3
 
 ## 步骤 4：S11 合规检查
 
 **a) S11.1 合规：**
 1. 运行 `git diff --name-only` 识别功能的新增/修改文件
 2. 从 feature.md §全局约束摘录 §11.1 表（本特性交集子集）读取每行的"被替代方案"列；对每个非空条目，grep 新增/修改的源文件查找被替代的导入模式。匹配即违规，必须修复。
-3. 不得回访 `docs/plans/*-design.md` 的原始 §11.1 全表 — 若 feature.md 摘录缺失 → 返 BLOCKED。
+3. 不得回访 `{{HARNESS_MEMORY_DIR}}/plans/design.md` 的原始 §11.1 全表 — 若 `{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-design.md` 摘录缺失 → 返 BLOCKED。
 
 **b) 现有代码复用验证：**
 1. 读取功能设计的"现有代码复用"章节

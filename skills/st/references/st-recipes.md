@@ -1,6 +1,6 @@
 # 系统测试配方（System Testing Recipes）
 
-按语言 / 框架提供每类 ST 测试的配方。依据 `feature-list.json` 中的 `tech_stack` 选择配方。
+按语言 / 框架提供每类 ST 测试的配方。依据 init 产物 `{{HARNESS_MEMORY_DIR}}/plans/project-context.md` 中的 `tech_stack` 选择配方。
 
 ## 1. 集成测试模式
 

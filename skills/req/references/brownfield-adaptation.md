@@ -9,8 +9,8 @@
 Step 1.6 分派 explore 后（或已有产物），构建 ESI 表。
 
 **数据来源**（按优先级）：
-1. `docs/explore/codebase-research.md`（explore 产出）
-2. `docs/rules/coding-constraints.md`、`coding-style.md`、`build-and-compilation.md`
+1. `{{HARNESS_MEMORY_DIR}}/notes/explore/codebase-research.md`（explore 产出）
+2. `{{HARNESS_MEMORY_DIR}}/notes/rules/coding-constraints.md`、`coding-style.md`、`build-and-compilation.md`
 3. 项目结构快速扫描（入口、中间件目录、配置文件）
 
 **ESI 表格式**：
@@ -46,7 +46,7 @@ Step 3 Gap Fill 时，对涉及 ESI 的 gap 使用校核式问句（不使用挖
    > "ESI 已确立 `<维度>`（如鉴权走 JWT）。FR-X 需要**沿用 / 替换 / 扩展**此能力？"
 
 4. **硬性约束增量**：
-   > "除了 `docs/rules/` 和 ESI 已有约束外，本次变更有什么**额外**硬性约束（平台、性能阈值、合规）？"
+   > "除了 `{{HARNESS_MEMORY_DIR}}/notes/rules/` 和 ESI 已有约束外，本次变更有什么**额外**硬性约束（平台、性能阈值、合规）？"
 
 **额外产出**：为每个 FR 记录变更分类 — `NEW | MODIFY | EXTEND | REUSE`。写入 SRS §1.4。
 
