@@ -1,0 +1,19 @@
+{
+  "bpId": "long-task-full",
+  "copiedAt": "2026-05-16T00:00:00.000Z",
+  "skills": [
+    { "originalRef": "claude:bp-long-task-full/scan",     "newRef": "claude:bp-long-task-full/scan",     "tool": "claude", "name": "scan",     "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0 },
+    { "originalRef": "claude:bp-long-task-full/req",      "newRef": "claude:bp-long-task-full/req",      "tool": "claude", "name": "req",      "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0 },
+    { "originalRef": "claude:bp-long-task-full/ucd",      "newRef": "claude:bp-long-task-full/ucd",      "tool": "claude", "name": "ucd",      "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0 },
+    { "originalRef": "claude:bp-long-task-full/design",   "newRef": "claude:bp-long-task-full/design",   "tool": "claude", "name": "design",   "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0 },
+    { "originalRef": "claude:bp-long-task-full/ats",      "newRef": "claude:bp-long-task-full/ats",      "tool": "claude", "name": "ats",      "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0 },
+    { "originalRef": "claude:bp-long-task-full/init",     "newRef": "claude:bp-long-task-full/init",     "tool": "claude", "name": "init",     "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 1 },
+    { "originalRef": "claude:bp-long-task-full/wd",       "newRef": "claude:bp-long-task-full/wd",       "tool": "claude", "name": "wd",       "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0, "containerLoop": "iter" },
+    { "originalRef": "claude:bp-long-task-full/red",      "newRef": "claude:bp-long-task-full/red",      "tool": "claude", "name": "red",      "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0, "containerLoop": "iter" },
+    { "originalRef": "claude:bp-long-task-full/green",    "newRef": "claude:bp-long-task-full/green",    "tool": "claude", "name": "green",    "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0, "containerLoop": "iter" },
+    { "originalRef": "claude:bp-long-task-full/refactor", "newRef": "claude:bp-long-task-full/refactor", "tool": "claude", "name": "refactor", "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0, "containerLoop": "iter" },
+    { "originalRef": "claude:bp-long-task-full/wst",      "newRef": "claude:bp-long-task-full/wst",      "tool": "claude", "name": "wst",      "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0, "containerLoop": "iter" },
+    { "originalRef": "claude:bp-long-task-full/st",       "newRef": "claude:bp-long-task-full/st",       "tool": "claude", "name": "st",       "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0 },
+    { "originalRef": "claude:bp-long-task-full/finalize", "newRef": "claude:bp-long-task-full/finalize", "tool": "claude", "name": "finalize", "source": "harness-blueprint-adapter", "schemaPlaceholdersRendered": 0 }
+  ]
+}

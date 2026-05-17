@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 3,
+  "id": "long-task-full",
+  "version": "1.0.0",
+  "title": "Long-Task 完整主线 (含 UCD/ATS/Feature-ST/系统 ST/Finalize)",
+  "description": "由 D:\\03PyDemo\\longtaskforagent 全主链 (brownfield-scan / requirements / ucd / design / ats / init / work-design+feature-design / tdd-red / tdd-green / tdd-refactor / work-st+feature-st / st / finalize) 通过 harness-blueprint-adapter 转化产出。schemaVersion=3，含 SRS/Design/ATS/Init 四硬门 + loop 内 gate_static，loop body 6 节点 (wd/red/green/gate_static/refactor/wst)，所有产物落 .harness/memory/。",
+  "startNode": "scan",
+  "nodes": [
+    { "id": "scan",        "title": "代码库约定扫描",     "x": 100,  "y": 100 },
+    { "id": "req",         "title": "需求打磨 → SRS",     "x": 300,  "y": 100 },
+    {
+      "id": "gate_srs",    "kind": "script", "title": "SRS 硬门", "x": 500, "y": 100,
+      "script": { "path": "shared-scripts/gate_srs.cjs", "timeoutMs": 15000 },
+      "onFail": { "rewindTo": "req", "ticketTitle": "SRS 不达标", "maxAttempts": 3, "when": "status != \"ok\"" }
+    },
+    { "id": "ucd",         "title": "UI 样式指南 (UCD)",  "x": 700,  "y": 100 },
+    { "id": "design",      "title": "设计文档",           "x": 900,  "y": 100 },
+    {
+      "id": "gate_design", "kind": "script", "title": "Design 硬门", "x": 1100, "y": 100,
+      "script": { "path": "shared-scripts/gate_design.cjs", "timeoutMs": 15000 },
+      "onFail": { "rewindTo": "design", "ticketTitle": "Design 不达标", "maxAttempts": 3, "when": "status != \"ok\"" }
+    },
+    { "id": "ats",         "title": "验收测试策略 (ATS)", "x": 1300, "y": 100 },
+    {
+      "id": "gate_ats",    "kind": "script", "title": "ATS 硬门", "x": 1500, "y": 100,
+      "script": { "path": "shared-scripts/gate_ats.cjs", "timeoutMs": 15000 },
+      "onFail": { "rewindTo": "ats", "ticketTitle": "ATS 映射不完整", "maxAttempts": 3, "when": "status != \"ok\"" }
+    },
+    { "id": "init",        "title": "初始化 + 灌入 iter", "x": 1700, "y": 100 },
+    {
+      "id": "gate_init",   "kind": "script", "title": "Init 硬门", "x": 1900, "y": 100,
+      "script": { "path": "shared-scripts/gate_init.cjs", "timeoutMs": 15000 },
+      "onFail": { "rewindTo": "init", "ticketTitle": "Init 产物不达标", "maxAttempts": 3, "when": "status != \"ok\"" }
+    },
+    {
+      "id": "iter", "kind": "loop", "title": "按 feature 迭代 W→R/G/R→ST", "x": 2100, "y": 100,
+      "iterator": { "kind": "tasks", "tasksSchemaRef": "default", "selectStrategy": "first-pending" },
+      "body": {
+        "startNode": "wd",
+        "nodes": [
+          { "id": "wd",       "kind": "skill",  "title": "Feature Design",   "x": 100, "y": 100 },
+          { "id": "red",      "kind": "skill",  "title": "TDD Red",          "x": 300, "y": 100 },
+          { "id": "green",    "kind": "skill",  "title": "TDD Green",        "x": 500, "y": 100,
+            "onFail": { "rewindTo": "red", "ticketTitle": "Green 失败 — 重审 Red 测试", "maxAttempts": 2 } },
+          { "id": "gate_static", "kind": "script", "title": "静态分析门", "x": 700, "y": 100,
+            "script": { "path": "shared-scripts/gate_static.cjs", "timeoutMs": 60000 },
+            "onFail": { "rewindTo": "refactor", "ticketTitle": "静态分析未通过", "maxAttempts": 3, "when": "status != \"ok\"" } },
+          { "id": "refactor", "kind": "skill",  "title": "TDD Refactor",     "x": 900, "y": 100,
+            "onFail": { "rewindTo": "green", "ticketTitle": "Refactor 引入回归", "maxAttempts": 2, "when": "status != \"ok\"" } },
+          { "id": "wst",      "kind": "skill",  "title": "Feature ST",       "x": 1100, "y": 100,
+            "onFail": { "rewindTo": "green", "ticketTitle": "Feature-ST 暴露实现缺陷", "maxAttempts": 2 } }
+        ],
+        "edges": [
+          { "from": "wd",          "to": "red",         "when": "status == \"ok\"" },
+          { "from": "red",         "to": "green",       "when": "status == \"ok\"" },
+          { "from": "green",       "to": "gate_static" },
+          { "from": "gate_static", "to": "refactor" },
+          { "from": "refactor",    "to": "wst",         "when": "status == \"ok\"" }
+        ]
+      },
+      "maxIterations": 50
+    },
+    { "id": "st",          "title": "系统 ST (跨特性)",   "x": 2300, "y": 100,
+      "onFail": { "rewindTo": "iter", "ticketTitle": "系统 ST verdict No-Go — 修复后重跑 iter", "maxAttempts": 1, "when": "status != \"ok\"" } },
+    { "id": "finalize",    "title": "Finalize 发布",      "x": 2500, "y": 100 }
+  ],
+  "edges": [
+    { "from": "scan",        "to": "req",         "when": "status == \"ok\"" },
+    { "from": "req",         "to": "gate_srs",    "when": "status == \"ok\"" },
+    { "from": "gate_srs",    "to": "ucd" },
+    { "from": "ucd",         "to": "design",      "when": "status == \"ok\"" },
+    { "from": "design",      "to": "gate_design", "when": "status == \"ok\"" },
+    { "from": "gate_design", "to": "ats" },
+    { "from": "ats",         "to": "gate_ats",    "when": "status == \"ok\"" },
+    { "from": "gate_ats",    "to": "init" },
+    { "from": "init",        "to": "gate_init",   "when": "status == \"ok\"" },
+    { "from": "gate_init",   "to": "iter" },
+    { "from": "iter",        "to": "st" },
+    { "from": "st",          "to": "finalize",    "when": "status == \"ok\"" }
+  ],
+  "tasksSchemas": {
+    "default": {
+      "requiredFields": {
+        "id":     { "type": ["string", "number"] },
+        "status": { "type": "string", "default": "failing" }
+      },
+      "recommendedFields": {
+        "title":        { "type": "string" },
+        "description":  { "type": "string" },
+        "priority":     { "type": "string", "enum": ["high", "medium", "low"] },
+        "dependencies": { "type": "array" }
+      },
+      "userFields": {
+        "category":           { "type": "string" },
+        "srs_trace":          { "type": "array" },
+        "verification_steps": { "type": "array" },
+        "tech_stack":         { "type": "object" },
+        "constraints":        { "type": "array" },
+        "assumptions":        { "type": "array" },
+        "single_round":       { "type": "boolean" },
+        "ui":                 { "type": "boolean" }
+      },
+      "extensionFieldsAllowed": true,
+      "doneValues": ["passing"],
+      "example": {
+        "id": 1,
+        "title": "登录表单组件",
+        "status": "failing",
+        "priority": "high",
+        "category": "core",
+        "ui": true,
+        "description": "邮箱 + 密码字段、必填校验、submit 触发回调",
+        "srs_trace": ["FR-001", "FR-003"],
+        "dependencies": [],
+        "verification_steps": ["页面渲染表单", "空提交报错", "成功 submit 调回调"]
+      }
+    }
+  }
+}
