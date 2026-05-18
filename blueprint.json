@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "id": "long-task-full",
   "version": "1.0.0",
-  "title": "Long-Task 完整主线 (含 UCD/ATS/Feature-ST/系统 ST/Finalize)",
+  "title": "Long-Task 完整主线",
   "description": "由 D:\\03PyDemo\\longtaskforagent 全主链 (brownfield-scan / requirements / ucd / design / ats / init / work-design+feature-design / tdd-red / tdd-green / tdd-refactor / work-st+feature-st / st / finalize) 通过 harness-blueprint-adapter 转化产出。schemaVersion=3，含 SRS/Design/ATS/Init 四硬门 + loop 内 gate_static，loop body 6 节点 (wd/red/green/gate_static/refactor/wst)，所有产物落 .harness/memory/。",
   "startNode": "scan",
   "nodes": [
