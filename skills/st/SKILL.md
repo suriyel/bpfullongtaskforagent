@@ -49,7 +49,7 @@ To skip: respond SKIP {reason}
 
 - 所有特性都 `"status": "passing"`（即 loop 已全部完成）—— 上游 iter loop 已保证此前置；若仍有未完成项，立即用 `{{ADVANCE_FAIL notes="ST readiness failed: features still failing"}}` 触发重做
 - SRS 文档存在（`{{HARNESS_MEMORY_DIR}}/plans/srs.md`）；Design 文档存在（`{{HARNESS_MEMORY_DIR}}/plans/design.md`）
-- 适用时加载 config 值——按 `{{HARNESS_MEMORY_DIR}}/notes/long-task-guide.md` 激活环境；若项目使用基于文件的 config，在运行检查前确保其已加载
+- 适用时加载 config 值——按 `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md` §2 Env Activation 激活环境；若项目使用基于文件的 config，在运行检查前确保其已加载
 - **启动 ST 运行时服务**：使用 `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md` 中的命令启动服务（CLI/仅库项目则跳过）
   - 阅读 `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md` —— 使用 "Start All Services" 节；每条命令都带输出重定向运行：
     ```bash
@@ -63,7 +63,7 @@ To skip: respond SKIP {reason}
   - **记录信息**：在 `{{HARNESS_MEMORY_DIR}}/notes/task-progress.md` 记录 PID 与端口——Step 11 清理必需
 - 从 `{{TASKS_GET}}` 输出中读取每条 task —— 注意 `tech_stack`、`quality_gates`、`constraints[]`、`assumptions[]`（若存于 loop 任务 metadata 或 `{{VARS_GET}}`）
 - 读取 SRS —— 抽取所有 FR-xxx、NFR-xxx、IFR-xxx、CON-xxx 需求；读取 Stakeholders、User Personas 与 Glossary 节
-- 读取 Design 文档 —— 抽取架构（§1）、Internal API Contracts（§4）、External Interfaces（§5 若存在）；测试框架与阈值读 `{{HARNESS_MEMORY_DIR}}/notes/long-task-guide.md` 或 `{{VARS_GET}}`；依赖版本读包清单文件
+- 读取 Design 文档 —— 抽取架构（§1）、Internal API Contracts（§4）、External Interfaces（§5 若存在）；测试框架与阈值读 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json`（`tech_stack` / `quality_gates` 字段）或 `{{VARS_GET}}`；依赖版本读包清单文件
 - 若存在 UI 特性：读取 UCD 文档（`{{HARNESS_MEMORY_DIR}}/plans/ucd.md`）
 - 读取 `{{HARNESS_MEMORY_DIR}}/notes/task-progress.md` —— 会话历史上下文
 
@@ -123,7 +123,7 @@ To skip: respond SKIP {reason}
 
 ### 3. 回归测试
 
-1. 使用 `{{HARNESS_MEMORY_DIR}}/notes/long-task-guide.md` 的命令运行项目完整测试套件
+1. 使用 `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md` §3 Build & Execution Commands 的命令运行项目完整测试套件
 
 2. 核对所有测试通过——零失败、零错误
 3. 核对项目级行/分支覆盖率阈值达标

@@ -1,13 +1,13 @@
 ---
 name: init
-description: "当 ATS 文档存在（或自动跳过）但 features 任务清单未生成时使用 — 打包项目骨架、分发 init-env sub-skill 生成 env-guide.md + 主 agent 直接生成 init.sh / long-task-guide.md / features[]，然后 git init 并灌入 iter loop"
+description: "当 ATS 文档存在（或自动跳过）但 features 任务清单未生成时使用 — 打包项目骨架、分发 init-env sub-skill 生成 env-guide.md + 主 agent 直接生成 init.sh / features[]，然后 git init 并灌入 iter loop"
 ---
 
 **语言规则**：用中文（简体）回复用户。所有生成的文档、报告和面向用户的输出必须用中文编写。Skill 名称、代码标识符和 JSON 字段名保持英文。
 
 # 初始化 Long-Task 项目
 
-在 SRS / Design / ATS 都获批后运行一次。通过 `init_project.cjs` 打包确定性骨架；Step 3 分发 init-env SubAgent 产 env-guide.md；Step 4 / 5 主 agent 直接执行（init.sh / init.ps1 / long-task-guide.md / features[] / check_configs.py）。然后 git init 并把 features[] 灌入 iter loop。
+在 SRS / Design / ATS 都获批后运行一次。通过 `init_project.cjs` 打包确定性骨架；Step 3 分发 init-env SubAgent 产 env-guide.md；Step 4 / 5 主 agent 直接执行（init.sh / init.ps1 / features[] / check_configs.py）。然后 git init 并把 features[] 灌入 iter loop。工作流导航全部由蓝图 DAG + auto-loop 承担，不再生成独立的工作流引导文档。
 
 ## 输入文档
 
@@ -96,30 +96,11 @@ pwsh -NoProfile -Command "[System.Management.Automation.Language.Parser]::ParseF
 
 主机无 `pwsh` 用 `powershell` 同义命令；两者皆不可用 → AskUserQuestion 决定跳过 PS 自检或中止。任一失败 → 主 agent 修脚本后重跑自检（最多 2 轮，第 3 次自动 escalate）。
 
-### 5. 生成 long-task-guide.md + features[] + check_configs（主 agent 直接执行）
+### 5. 生成 features[] + check_configs（主 agent 直接执行）
 
-主 agent 按下列 5 子步顺序完成全部产物。完整 Feature List Schema 字段表与赋值引导见本 SKILL.md 末尾 §Feature List Schema 段。
+主 agent 按下列 4 子步顺序完成全部产物。工作流导航（Orient/Bootstrap/TDD Red-Green-Refactor/Persist 等阶段切换）由蓝图 DAG + auto-loop 承担；命令执行从 `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md` §1-§3 读取；阈值与技术栈从 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json` 的 `tech_stack` / `quality_gates` 字段读取。完整 Feature List Schema 字段表与赋值引导见本 SKILL.md 末尾 §Feature List Schema 段。
 
-#### 5.1 生成 long-task-guide.md
-
-写到 `{{HARNESS_MEMORY_DIR}}/notes/long-task-guide.md`：**仅工作流导航**，不嵌具体命令；所有命令引用一律写 "See `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md` §3 Build & Execution Commands" / "See `env-guide.md` §1 Service Lifecycle"。
-
-**必需 11 节**（自检见 `references/feature-validation.md` §F）：
-1. `## Orient`
-2. `## Bootstrap`
-3. `## Config Gate`
-4. `## TDD Red`
-5. `## TDD Green`
-6. `## Coverage Gate`
-7. `## TDD Refactor`
-8. `## Verification Enforcement`
-9. `## Inline Compliance Check`
-10. `## Persist`
-11. `## Critical Rules`
-
-含 `Config Management` 节（描述项目 config 格式 dotenv / Spring properties / 系统 env）+ `Real Test Convention` 节（识别方法、env-guide §3 引用、本技术栈下真实测试示例）。仅项目有 UI 特性时加入 UI 测试节（Chrome DevTools MCP 工具名）。
-
-#### 5.2 抽取 features[]（严格按 §Feature List Schema）
+#### 5.1 抽取 features[]（严格按 §Feature List Schema）
 
 输入：`{{HARNESS_MEMORY_DIR}}/plans/{srs,design,ats,ucd}.md` + `project-context.md`。
 
@@ -135,11 +116,11 @@ pwsh -NoProfile -Command "[System.Management.Automation.Language.Parser]::ParseF
 
 | 选项 | 处理 |
 |---|---|
-| `y` (approve) | 直接通过；进入 5.3 |
+| `y` (approve) | 直接通过；进入 5.2 |
 | `auto-fix` | 按 references/feature-decomposition.md 拆分/合并规则自动调整；最多 2 轮 |
-| `manual-adjust` | 主 agent 暂停，提示用户直接编辑 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json`；resume 后只重跑 5.4 自检，不重算 sizing |
+| `manual-adjust` | 主 agent 暂停，提示用户直接编辑 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json`；resume 后只重跑 5.3 自检，不重算 sizing |
 
-#### 5.3 生成 check_configs.py + .env.example
+#### 5.2 生成 check_configs.py + .env.example
 
 读 SRS §7 IFR + Design API 探测：
 - API key / 服务 URL → type `env`（`required_configs[].type="env"`，`key=ENV_VAR`）
@@ -164,13 +145,13 @@ pwsh -NoProfile -Command "[System.Management.Automation.Language.Parser]::ParseF
 - 打印缺失的 `name` + `check_hint`；Exit 0 全存在 / Exit 1 缺失任一
 - **加载逻辑硬编码**，不要 `--dotenv` / format 标志
 
-#### 5.4 自检（严格按 `references/feature-validation.md`）
+#### 5.3 自检（严格按 `references/feature-validation.md`）
 
 按该协议 A–K 11 项规则逐条过：orphan FR / feature 字段完整性 / 依赖环 / wave 拓扑 / 11 节齐全 / UI 视觉断言 / 前后端依赖 / required_configs / check_configs.py 可执行 / tech_stack 一致性。
 
-任一失败 → 主 agent 修复；无法自动修复 → 回到 5.2 重新抽取或 AskUserQuestion 让用户决策。**不在自检未通过时直接 advance**（gate_init 硬门也会拦截，但本节点内 resolve 更便宜）。
+任一失败 → 主 agent 修复；无法自动修复 → 回到 5.1 重新抽取或 AskUserQuestion 让用户决策。**不在自检未通过时直接 advance**（gate_init 硬门也会拦截，但本节点内 resolve 更便宜）。
 
-#### 5.5 灌入 iter loop（{{TASKS_SET}}）
+#### 5.4 灌入 iter loop（{{TASKS_SET}}）
 
 把完整 feature-list.json 落 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json`（含全部根字段供调试 / Worker 查阅），然后调用：
 
@@ -193,8 +174,8 @@ git init
 git add -A
 git commit -m "chore: initialize long-task project scaffold
 
-- <N> features seeded into iter loop (via Step 5.5 {{TASKS_SET}})
-- env-guide.md, long-task-guide.md
+- <N> features seeded into iter loop (via Step 5.4 {{TASKS_SET}})
+- env-guide.md
 - init.sh / init.ps1 bootstrap scripts
 - .env.example + check_configs.py
 "
@@ -214,12 +195,12 @@ git commit -m "chore: initialize long-task project scaffold
 - 在 `{{HARNESS_MEMORY_DIR}}/notes/task-progress.md` 追加 `## Session 0 — Init` 条目：SRS / Design / ATS 路径引用、特性总数、UI 特性数、config 数
 - **不**写 `## Current State` 进度条——当前状态由蓝图 loop 引擎 state 管理
 
-完成 Step 9 后主 agent advance ok；蓝图引擎自动推进到 `gate_init` 硬门（校验 SRS / Design / ATS / long-task-guide / feature-list.json / init.sh / check_configs.py 落盘合法）→ 通过则进入 iter loop。
+完成 Step 9 后主 agent advance ok；蓝图引擎自动推进到 `gate_init` 硬门（校验 SRS / Design / ATS / feature-list.json / init.sh / check_configs.py 落盘合法）→ 通过则进入 iter loop。
 
 <!-- tasks-schema: default -->
 ## §Feature List Schema
 
-本段固化 feature-list.json 完整结构与 features[] 字段表，与 `blueprint.json.tasksSchemas.default` 同源（修改两处同步）。Step 5.2 严格按此抽取。
+本段固化 feature-list.json 完整结构与 features[] 字段表，与 `blueprint.json.tasksSchemas.default` 同源（修改两处同步）。Step 5.1 严格按此抽取。
 
 > 项目 schema 硬约束依据：`server-blueprint/bp-tasks-schema.js` (L1_FIELDS / L2_FIELDS / DEFAULT_DONE_VALUES) + `harness-blueprint-adapter/references/task-decomposition.md` 模板 A + `harness-blueprint-adapter/references/blueprint-contract.md`。
 
@@ -309,7 +290,7 @@ git commit -m "chore: initialize long-task project scaffold
 | tasks 包装 | `{ "tasks": [...] }` | 通用 |
 | items 包装 | `{ "items": [...] }` | 通用 |
 
-灌入调用（见 Step 5.5）：
+灌入调用（见 Step 5.4）：
 
 ```bash
 {{TASKS_SET loop=iter file={{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json}}
@@ -323,7 +304,7 @@ git commit -m "chore: initialize long-task project scaffold
 
 ### §D 自定义字段赋值引导
 
-主 agent 执行 Step 5.2 时按此表逐字段填充：
+主 agent 执行 Step 5.1 时按此表逐字段填充：
 
 | 字段层级 | 字段 | 赋值来源 |
 |---|---|---|
@@ -352,14 +333,14 @@ git commit -m "chore: initialize long-task project scaffold
 
 - **Step 3 init-env SubAgent 边界**：主 agent 不读 env-guide 全文；只按 evidence + next_step_input 做决策；env-guide.md frontmatter `approved_by` / `approved_date` / `approved_sections` 由主 agent 写，sub-skill 永不修改
 - **Step 4 / 5 主 agent 内联**：主 agent **直接读** SRS / Design / ATS / project-context.md，按 `references/` 中各协议执行；不再委派 SubAgent
-- **feature-list.json 单一写者**：Step 5.5 由主 agent 写到 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json`；后续节点只读
-- **{{TASKS_SET}} 灌入是硬要求**：Step 5.5 漏调下游 iter loop halt（reason: `loop_no_tasks_seeded`）
+- **feature-list.json 单一写者**：Step 5.4 由主 agent 写到 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json`；后续节点只读
+- **{{TASKS_SET}} 灌入是硬要求**：Step 5.4 漏调下游 iter loop halt（reason: `loop_no_tasks_seeded`）
 - **gate_init 在 Step 9 之后自动触发**：主 agent 完成 9 后 advance ok；蓝图引擎根据 DAG 边推进到 gate_init → iter loop
 
 ## 阻塞 / 失败
 
 - Step 3 env-guide 同一前缀 3 次 blocked → `bp-advance blocked --notes='[ENV-GUIDE-BLOCKED]'`
 - Step 4 `bash -n` / PowerShell parser 失败无法修复 → `bp-advance blocked --notes='[BOOTSTRAP-SYNTAX-FAIL]'`
-- Step 5.4 自检任一关卡失败且无法自动修复（A–K，详见 references/feature-validation.md）→ AskUserQuestion；用户中止 → `bp-advance failed --notes='[FEATURES-VALIDATION-FAIL]'`
-- Step 5.5 {{TASKS_SET}} 灌入失败（schema 校验未通过）→ `bp-advance failed --notes='[TASKS-SEED-FAIL]'`
+- Step 5.3 自检任一关卡失败且无法自动修复（A–E, G–K，详见 references/feature-validation.md）→ AskUserQuestion；用户中止 → `bp-advance failed --notes='[FEATURES-VALIDATION-FAIL]'`
+- Step 5.4 {{TASKS_SET}} 灌入失败（schema 校验未通过）→ `bp-advance failed --notes='[TASKS-SEED-FAIL]'`
 - Step 8 init 脚本无法在本机运行（环境管理器缺失等）→ AskUserQuestion 让用户决定切换或中止

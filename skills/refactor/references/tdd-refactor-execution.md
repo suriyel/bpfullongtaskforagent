@@ -10,7 +10,7 @@
    - §实现摘要（变更文件/类/方法合规依据）
    - §全局约束摘录（§11.1 / §11.5 / §11.6 合规依据）
    - §静态分析与质量工具命令（§11.4 静态分析门禁依据 + §11.7 阈值）
-3. 读取 `long-task-guide.md` -> 提取测试命令
+3. 读取 `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md` §3 Build & Execution Commands -> 提取测试命令
 
 **禁令**：本 SubAgent 不得 Glob / Read / Grep `{{HARNESS_MEMORY_DIR}}/plans/srs.md` 或 `{{HARNESS_MEMORY_DIR}}/plans/design.md`。Design §11 / §11.4 / §11.7 所有信息已沉淀到 `{{HARNESS_MEMORY_DIR}}/notes/feature-<id>-design.md` 两沉淀章节；缺失 → 返 BLOCKED。
 

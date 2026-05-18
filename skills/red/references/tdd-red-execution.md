@@ -60,7 +60,7 @@
 
 **在 Red 阶段，退出码 != 0 为成功。退出码 0（全部通过）表示测试有误。**
 
-1. 按 `long-task-guide.md` 激活环境
+1. 按 `{{HARNESS_MEMORY_DIR}}/notes/env-guide.md` §2 Env Activation 激活环境
 2. 运行 `[test-quiet]` → 期望退出码 != 0 且摘要显示 0 通过
 3. 如果有测试通过 → 运行 `[test-detail]` 识别哪个 → 重写 → 重新运行 `[test-quiet]`
 4. 如果工具/环境错误 → 诊断、修复、重新运行。绝不跳过。

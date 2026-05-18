@@ -1,6 +1,6 @@
 # Feature 完整性自检协议
 
-供 init Step 5.4 严格执行。完成 features[] 抽取（5.2）+ check_configs 生成（5.3）后，主 agent 按本协议做 inline 自检；任一规则失败 → 自动修复或回到 5.2 重做（不直接 advance）。
+供 init Step 5.3 严格执行。完成 features[] 抽取（5.1）+ check_configs 生成（5.2）后，主 agent 按本协议做 inline 自检；任一规则失败 → 自动修复或回到 5.1 重做（不直接 advance）。
 
 ## A. SRS 追溯性自检（orphan FR 检测）
 
@@ -63,24 +63,6 @@ orphan 非空且无可归并目标 → 主 agent AskUserQuestion 让用户决定
 2. `max_wave > 3` → 警告：依赖链过深，可能需要重新拆分 features 减少串行约束
 3. 主 agent AskUserQuestion 决定保留 / 调整
 
-## F. long-task-guide.md 11 节自检
-
-**规则**：long-task-guide.md 必须含以下 11 节，标题精确匹配：
-
-1. `## Orient`
-2. `## Bootstrap`
-3. `## Config Gate`
-4. `## TDD Red`
-5. `## TDD Green`
-6. `## Coverage Gate`
-7. `## TDD Refactor`
-8. `## Verification Enforcement`
-9. `## Inline Compliance Check`
-10. `## Persist`
-11. `## Critical Rules`
-
-任一缺失 → 主 agent 补齐缺失节；不可省略。
-
 ## G. UI feature 视觉断言自检
 
 **规则**：每个 `ui: true` 的 feature 必须至少含 1 条带 `[devtools]` 前缀的 verification_step，断言**正面视觉存在**（例如 `[devtools] 用户登录后页面显示欢迎语「Welcome, <name>」`）。
@@ -130,6 +112,8 @@ orphan 非空且无可归并目标 → 主 agent AskUserQuestion 让用户决定
 
 ## 自检通过条件
 
-A–K 全部通过 → 进入 Step 5.5（{{TASKS_SET}} 灌入）。
+A–E, G–K 全部通过 → 进入 Step 5.4（{{TASKS_SET}} 灌入）。
 
-任一关卡失败且不可自动修复 → 回到 Step 5.2 重新抽取 features 或 AskUserQuestion 让用户决策。**不要**在自检未通过时直接 advance（gate_init 硬门也会拦截，但 inline 自检失败应当本节点内 resolve）。
+任一关卡失败且不可自动修复 → 回到 Step 5.1 重新抽取 features 或 AskUserQuestion 让用户决策。**不要**在自检未通过时直接 advance（gate_init 硬门也会拦截，但 inline 自检失败应当本节点内 resolve）。
+
+> **§F 已废止**：原"long-task-guide.md 11 节自检"已下线，工作流导航（Orient/Bootstrap/Config Gate/TDD Red-Green-Refactor/Coverage Gate/Verification Enforcement/Persist/Critical Rules 等）改由蓝图 DAG + auto-loop 承担；命令/激活脚本/阈值分别从 `env-guide.md` 与 `feature-list.json` 读取。字母编号保留空隙以便与 gate_init.cjs 文档注释的历史 `A–K` 标记对齐。
