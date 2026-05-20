@@ -9,13 +9,7 @@ description: "对**当前任务**执行黑盒 Feature-ST 验收测试（独立 S
 
 > **对 `category: "bugfix"` 任务**：用例聚焦回归（防止再次出现）；ST 用例覆盖原始重现步骤 + 边界场景。
 
-## 获取当前任务
-
-```bash
-{{TASK_GET}}
-```
-
-输出 JSON，解析 `task.id` / `task.title` / `task.description` / `srs_trace` / `ui` / `category` / 其他业务字段。loop 引擎已挑好当前任务，无需手动锁定。
+解析 {{TASK_GET}} 输出的 JSON，取 `task.id` / `task.title` / `task.description` / `srs_trace` / `ui` / `category` / 其他业务字段。loop 引擎已挑好当前任务，无需手动锁定。
 
 ## 你的任务（主 agent 视角）
 

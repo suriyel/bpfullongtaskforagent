@@ -8,34 +8,18 @@ const path = require('path');
 const VALID_CATEGORIES = new Set(['FUNC', 'BNDRY', 'UI', 'SEC', 'PERF']);
 const TABLE_ROW_RE = /^\|\s*((?:FR|NFR|IFR)-\d{3})\s*\|/;
 
-function readStdin() {
-  return new Promise((resolve) => {
-    let buf = '';
-    process.stdin.on('data', c => buf += c);
-    process.stdin.on('end', () => resolve(buf));
-  });
-}
 function emit(pass, message) {
   process.stdout.write(JSON.stringify({ pass: !!pass, message: String(message || '') }) + '\n');
   process.exit(0);
 }
 
 (async () => {
-  let input;
-  try {
-    input = JSON.parse(await readStdin());
-    if (input.schemaVersion !== 2) {
-      process.stderr.write('Bad schemaVersion ' + input.schemaVersion + '\n');
-      process.exit(2);
-    }
-  } catch (e) {
-    process.stderr.write('Bad stdin: ' + (e && e.message) + '\n');
-    process.exit(2);
-  }
+  // v10: 脚本由 review skill 的 LLM 直接 `node` 运行（无框架 stdin）。
+  // cwd 即 LLM 运行目录（= 蓝图工作区）；不再读 schemaVersion stdin。
 
-  const atsPath = path.join(input.cwd, '.harness', 'memory', 'plans', 'ats.md');
+  const atsPath = path.join(process.cwd(), '.harness', 'memory', 'plans', 'ats.md');
   if (!fs.existsSync(atsPath)) {
-    emit(false, 'ATS 未生成: ' + path.relative(input.cwd, atsPath));
+    emit(false, 'ATS 未生成: ' + path.relative(process.cwd(), atsPath));
   }
 
   const content = fs.readFileSync(atsPath, 'utf8');

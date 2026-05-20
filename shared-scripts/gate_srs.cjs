@@ -9,34 +9,18 @@
 const fs = require('fs');
 const path = require('path');
 
-function readStdin() {
-  return new Promise((resolve) => {
-    let buf = '';
-    process.stdin.on('data', c => buf += c);
-    process.stdin.on('end', () => resolve(buf));
-  });
-}
 function emit(pass, message) {
   process.stdout.write(JSON.stringify({ pass: !!pass, message: String(message || '') }) + '\n');
   process.exit(0);
 }
 
 (async () => {
-  let input;
-  try {
-    input = JSON.parse(await readStdin());
-    if (input.schemaVersion !== 2) {
-      process.stderr.write('Bad schemaVersion ' + input.schemaVersion + '\n');
-      process.exit(2);
-    }
-  } catch (e) {
-    process.stderr.write('Bad stdin: ' + (e && e.message) + '\n');
-    process.exit(2);
-  }
+  // v10: 脚本由 review skill 的 LLM 直接 `node` 运行（无框架 stdin）。
+  // cwd 即 LLM 运行目录（= 蓝图工作区）；不再读 schemaVersion stdin。
 
-  const srsPath = path.join(input.cwd, '.harness', 'memory', 'plans', 'srs.md');
+  const srsPath = path.join(process.cwd(), '.harness', 'memory', 'plans', 'srs.md');
   if (!fs.existsSync(srsPath)) {
-    emit(false, 'SRS 未生成: ' + path.relative(input.cwd, srsPath));
+    emit(false, 'SRS 未生成: ' + path.relative(process.cwd(), srsPath));
   }
 
   const content = fs.readFileSync(srsPath, 'utf8');
@@ -49,7 +33,7 @@ function emit(pass, message) {
   for (const r of required) if (!r.re.test(content)) missing.push(r.name);
 
   if (missing.length) {
-    emit(false, 'SRS 缺必填段落: ' + missing.join('；') + '\n（路径：' + path.relative(input.cwd, srsPath) + '，长度 ' + content.length + ' chars）');
+    emit(false, 'SRS 缺必填段落: ' + missing.join('；') + '\n（路径：' + path.relative(process.cwd(), srsPath) + '，长度 ' + content.length + ' chars）');
   }
   if (content.length < 500) {
     emit(false, 'SRS 内容过短 (' + content.length + ' < 500 chars)，疑似桩文件');

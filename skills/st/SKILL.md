@@ -41,11 +41,7 @@ To skip: respond SKIP {reason}
 
 ### 1. ST 就绪关卡
 
-读取 loop 全量任务并校验状态：
-
-```bash
-{{TASKS_GET}}
-```
+执行 {{TASKS_GET}} 读取 loop 全量任务并校验状态。
 
 - 所有特性都 `"status": "passing"`（即 loop 已全部完成）—— 上游 iter loop 已保证此前置；若仍有未完成项，立即用 `{{ADVANCE_FAIL notes="ST readiness failed: features still failing"}}` 触发重做
 - SRS 文档存在（`{{HARNESS_MEMORY_DIR}}/plans/srs.md`）；Design 文档存在（`{{HARNESS_MEMORY_DIR}}/plans/design.md`）

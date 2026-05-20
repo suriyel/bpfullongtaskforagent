@@ -9,13 +9,7 @@ description: "当 iter loop 内 wd 完成后由 DAG 推进到本节点时使用 
 
 针对特性详细设计中测试清单（§7）的每一行编写测试。测试**必须**失败（特性尚未实现）。
 
-## 获取当前任务
-
-```bash
-{{TASK_GET}}
-```
-
-输出 JSON，解析 `task.id` / `task.title` / `task.description` / `task.srs_trace` / `task.ui` / `task.category` / 其他业务字段。loop 引擎已挑好当前任务，无需手动管理任务状态。
+解析 {{TASK_GET}} 输出的 JSON，取 `task.id` / `task.title` / `task.description` / `task.srs_trace` / `task.ui` / `task.category` / 其他业务字段。loop 引擎已挑好当前任务，无需手动管理任务状态。
 
 ## 输入解析
 

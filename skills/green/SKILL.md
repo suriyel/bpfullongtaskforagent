@@ -9,13 +9,7 @@ description: "当 red 完成后由 DAG 推进到本节点时使用 — TDD Green
 
 只写**刚好**能让测试通过的代码。
 
-## 获取当前任务
-
-```bash
-{{TASK_GET}}
-```
-
-输出 JSON，解析 `task.id` / `task.title` / `task.description` / `task.tech_stack` / 其他业务字段。loop 引擎已挑好当前任务，无需手动管理任务状态。
+解析 {{TASK_GET}} 输出的 JSON，取 `task.id` / `task.title` / `task.description` / `task.tech_stack` / 其他业务字段。loop 引擎已挑好当前任务，无需手动管理任务状态。
 
 ## 输入解析
 

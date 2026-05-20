@@ -25,13 +25,6 @@ const VALID_PRIORITIES = new Set(['high', 'medium', 'low']);
 const VALID_LANGUAGES = new Set(['python', 'java', 'javascript', 'typescript', 'c', 'cpp', 'c++', 'todo']);
 
 // ---- 工具 -------------------------------------------------------------------
-function readStdin() {
-  return new Promise((resolve) => {
-    let buf = '';
-    process.stdin.on('data', (c) => (buf += c));
-    process.stdin.on('end', () => resolve(buf));
-  });
-}
 function emit(pass, message) {
   process.stdout.write(JSON.stringify({ pass: !!pass, message: String(message || '') }) + '\n');
   process.exit(0);
@@ -184,20 +177,15 @@ function validateContextMd(filePath) {
 
 // ---- 主流程 ----------------------------------------------------------------
 (async () => {
-  let input;
-  try {
-    input = JSON.parse(await readStdin());
-    if (input.schemaVersion !== 2) {
-      process.stderr.write('Bad schemaVersion ' + input.schemaVersion + '\n');
-      process.exit(2);
-    }
-  } catch (e) {
-    process.stderr.write('Bad stdin: ' + (e && e.message) + '\n');
-    process.exit(2);
-  }
+  // v10: 由 review skill 的 LLM 直接运行（无框架 stdin）。从
+  // .harness/blueprint/state.json 读框架 state（loops/tasks）；cwd 即运行目录。
+  const cwd = process.cwd();
+  let state = {};
+  try { state = JSON.parse(fs.readFileSync(path.join(cwd, '.harness', 'blueprint', 'state.json'), 'utf8')); }
+  catch (_) { /* state 不可读：loops 视为空，下方校验会提示 */ }
 
-  // tasks 校验 — 从 stdin.loops 获取（context get），非磁盘文件
-  const loops = input.loops || {};
+  // tasks 校验 — 从 state.loops 获取（bp-tasks set 灌入的 items[]）
+  const loops = state.loops || {};
   const loopEntries = Object.entries(loops);
   let tasksErrors = [];
   if (loopEntries.length === 0) {
@@ -209,7 +197,7 @@ function validateContextMd(filePath) {
   }
 
   // project-context.md 校验 — 仍为磁盘文件
-  const memoryDir = path.join(input.cwd, '.harness', 'memory', 'plans');
+  const memoryDir = path.join(cwd, '.harness', 'memory', 'plans');
   const ctxPath = path.join(memoryDir, 'project-context.md');
   const ctxErrors = validateContextMd(ctxPath);
 

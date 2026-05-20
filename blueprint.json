@@ -20,14 +20,9 @@
     },
     {
       "id": "gate_srs",
-      "kind": "script",
       "title": "SRS 硬门",
       "x": 500,
       "y": 100,
-      "script": {
-        "path": "shared-scripts/gate_srs.cjs",
-        "timeoutMs": 15000
-      },
       "onFail": {
         "rewindTo": "req",
         "ticketTitle": "SRS 不达标",
@@ -49,14 +44,9 @@
     },
     {
       "id": "gate_design",
-      "kind": "script",
       "title": "Design 硬门",
       "x": 1100,
       "y": 100,
-      "script": {
-        "path": "shared-scripts/gate_design.cjs",
-        "timeoutMs": 15000
-      },
       "onFail": {
         "rewindTo": "design",
         "ticketTitle": "Design 不达标",
@@ -72,14 +62,9 @@
     },
     {
       "id": "gate_ats",
-      "kind": "script",
       "title": "ATS 硬门",
       "x": 1500,
       "y": 100,
-      "script": {
-        "path": "shared-scripts/gate_ats.cjs",
-        "timeoutMs": 15000
-      },
       "onFail": {
         "rewindTo": "ats",
         "ticketTitle": "ATS 映射不完整",
@@ -95,14 +80,9 @@
     },
     {
       "id": "gate_init",
-      "kind": "script",
       "title": "Init 硬门",
       "x": 1900,
       "y": 100,
-      "script": {
-        "path": "shared-scripts/gate_init.cjs",
-        "timeoutMs": 15000
-      },
       "onFail": {
         "rewindTo": "init",
         "ticketTitle": "Init 产物不达标",
@@ -152,14 +132,9 @@
           },
           {
             "id": "gate_static",
-            "kind": "script",
             "title": "静态分析门",
             "x": 700,
             "y": 100,
-            "script": {
-              "path": "shared-scripts/gate_static.cjs",
-              "timeoutMs": 60000
-            },
             "onFail": {
               "rewindTo": "refactor",
               "ticketTitle": "静态分析未通过",

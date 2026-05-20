@@ -153,11 +153,7 @@ pwsh -NoProfile -Command "[System.Management.Automation.Language.Parser]::ParseF
 
 #### 5.4 灌入 iter loop（{{TASKS_SET}}）
 
-把完整 feature-list.json 落 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json`（含全部根字段供调试 / Worker 查阅），然后调用：
-
-```bash
-{{TASKS_SET loop=iter file={{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json}}
-```
+把完整 feature-list.json 落 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json`（含全部根字段供调试 / Worker 查阅），然后执行 {{TASKS_SET loop=iter file={{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json}} 将特性清单灌入 iter loop。
 
 引擎 `extractItemsArray` 按 `features` 键提取 items[]（容器形状 B）；根字段（tech_stack / quality_gates / waves / required_configs / constraints / assumptions）落盘归档，不进 loop state。下游 worker 通过 `{{TASK_GET}}` 拿当前 feature。
 
@@ -290,11 +286,7 @@ git commit -m "chore: initialize long-task project scaffold
 | tasks 包装 | `{ "tasks": [...] }` | 通用 |
 | items 包装 | `{ "items": [...] }` | 通用 |
 
-灌入调用（见 Step 5.4）：
-
-```bash
-{{TASKS_SET loop=iter file={{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json}}
-```
+灌入调用（见 Step 5.4）：执行 {{TASKS_SET loop=iter file={{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json}}。
 
 灌入语义：
 - 整个 feature-list.json 落 `{{HARNESS_MEMORY_DIR}}/plans/<topic>-feature-list.json`（根字段供调试 / Worker 查阅）
